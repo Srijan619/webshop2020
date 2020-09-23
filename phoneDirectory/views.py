@@ -5,9 +5,10 @@ from .serializers import PhoneSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from django.views.generic import TemplateView
+from django.views.decorators.cache import never_cache
 
-def index(request):
-    return HttpResponse("Hello World")
+index = never_cache(TemplateView.as_view(template_name='index.html')) # Takes index from the react side
 
 class PhoneListView(APIView):
 

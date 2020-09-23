@@ -1,7 +1,7 @@
 import React, { useState} from 'react';
 
 function Index(props) {
-    const url = "http://127.0.0.1:8000/phone/api/";
+    const url = "http://127.0.0.1:8000/api/";
 
     const [name, setName]=useState("");
     const [number, setNumber]=useState("");
