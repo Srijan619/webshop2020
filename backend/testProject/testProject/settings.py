@@ -25,7 +25,7 @@ SECRET_KEY = 'ear(+b*pji@1jo*)h=t8d3p&(3m+lvv*=1=hqhn&0*^-jg%4!+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1','https://test-django-react-app1.herokuapp.com/']
 
 
 # Application definition
@@ -126,3 +126,5 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'build', 'static')
 STATICFILES_DIRS = []
 CORS_ORIGIN_ALLOW_ALL = True
+
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
