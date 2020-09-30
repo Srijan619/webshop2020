@@ -1,47 +1,54 @@
-import React, { useState, useEffect } from 'react';
-import AddPhone from './addPhone';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import Login from './components/user/Login';
+import SignUp from './components/user/SignUp';
+import Nav from './components/Nav';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import * as actions from './store/actions/auth';
 
-function App() {
-
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const url="https://test-django-react-app1.herokuapp.com/api/";
+function App(props) {
   useEffect(() => {
-    (
-      async function () {
+    props.onTryAutoSignin();
+  });
 
-        const response = await fetch(url)
-        const data = await response.json();
-        setData(data);
-        setLoading(false);
-      }
-      
-
-    )();
-  }, [data])
 
   return (
-    <div style={style.root}>
-      {
-        loading ? <div>...Loading</div> :
-          <div>
-            <AddPhone></AddPhone>
-            {data.map(item => (
-              <div  key={item.id}>
-                <ul> {item.name} {item.number}</ul>
-              </div>
-            )
-            )}
-          </div>
-      }
+    <div>
+      <Router>
+        <Nav />
+        <Switch {...props}>
+          <Route path="/" exact component={Home} />
+          {props.isAuthenticated?<></>:<><Route path="/login" component={Login} /> <Route path="/signup" component={SignUp} /></>}
+          
+          <Route path="/logout" component={Home} />
+          
+        </Switch>
+      </Router>
+{/* 
+      <Login {...props}></Login> */}
     </div>
   );
 }
 
-export default App;
-
-const style = {
-  root: {
-    padding: 5
+const mapStateToProps = state => {
+  return {
+    isAuthenticated: state.token !== null,
   }
 }
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onTryAutoSignin: () => dispatch(actions.authCheckState())
+  }
+}
+
+const Home = () => {
+  return (
+    <div>
+      <h1>Home Page</h1>
+    </div>
+  )
+
+}
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+
