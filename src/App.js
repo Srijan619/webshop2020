@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import Login from './components/user/Login';
 import SignUp from './components/user/SignUp';
+import BrowseItems from './components/Items/BrowseItems';
 import Nav from './components/Nav';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import * as actions from './store/actions/auth';
@@ -17,10 +18,9 @@ function App(props) {
       <Router>
         <Nav />
         <Switch {...props}>
-          <Route path="/" exact component={Home} />
+          <Route path="/" exact component={BrowseItems} />
           {props.isAuthenticated?<></>:<><Route path="/login" component={Login} /> <Route path="/signup" component={SignUp} /></>}
-          
-          <Route path="/logout" component={Home} />
+          <Route path="/logout" component={BrowseItems} />
           
         </Switch>
       </Router>
@@ -42,13 +42,6 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-const Home = () => {
-  return (
-    <div>
-      <h1>Home Page</h1>
-    </div>
-  )
 
-}
 export default connect(mapStateToProps, mapDispatchToProps)(App);
 

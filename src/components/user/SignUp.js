@@ -52,7 +52,7 @@ const SignUp= (props) => {
 };
 const useStyles = makeStyles((theme) => ({
     root: {
-        padding: 5,
+        marginTop:'5%',
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
