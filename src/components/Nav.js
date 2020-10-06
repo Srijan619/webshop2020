@@ -10,12 +10,15 @@ import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import IconButton from '@material-ui/core/IconButton';
+import Cart from '../components/Items/Cart'
+import { Typography } from '@material-ui/core';
+
 
 const Nav = (props) => {
     const classes = useStyles();
     const history = useHistory();
     return (
-        <div >
+        <div className={classes.root}>
             <AppBar>
                 <Toolbar>
                     <Button color="inherit" onClick={() => { history.push('/') }} className={classes.title}>Home</Button>
@@ -36,11 +39,13 @@ const Nav = (props) => {
                     <div className={classes.buttons}>
                         {
                             props.token ?
-                            <>
+                                <div className={classes.cartButton}>
+                                <p >{props.username}</p>
+                                <Button onClick={() => { props.onSignOut();history.push('/') }} color="inherit">My Items</Button>                             
                                 <Button onClick={() => { props.onSignOut();history.push('/') }} color="inherit">Logout</Button>
-                                <IconButton>  <ShoppingCartIcon style={{fill: "white"}}/></IconButton>
+                                <Cart></Cart>
                               
-                                </>
+                                </div>
                                 :
                                 <>
 
@@ -58,7 +63,8 @@ const Nav = (props) => {
 };
 const mapStateToProps = (state) => {
     return {
-        token: state.authReducer.token
+        token: state.authReducer.token,
+        username:state.authReducer.username
     }
 }
 
@@ -78,7 +84,11 @@ const useStyles = makeStyles((theme) => ({
     },
     buttons: {
         marginLeft: 'auto',
-        marginRight: 0
+        marginRight: 0,
+    },
+    cartButton:{
+        display:'flex',
+        flexDirection:'row'
     },
     searchIcon: {
         padding: theme.spacing(0, 2),

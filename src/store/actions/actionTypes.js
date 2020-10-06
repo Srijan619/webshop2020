@@ -6,3 +6,7 @@ export const AUTH_LOGOUT='AUTH_LOGOUT';
 export const FETCH_START='FETCH_START';
 export const FETCH_SUCCESS='FETCH_SUCCESS';
 export const FETCH_FAIL='FETCH_FAIL';
+
+export const ADDCART_START='ADDCART_START';
+export const ADDCART_SUCCESS='ADDCART_SUCCESS';
+export const ADDCART_FAIL='ADDCART_FAIL';

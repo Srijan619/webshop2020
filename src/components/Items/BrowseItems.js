@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/browse'
+import * as actionAdd from '../../store/actions/cartAction'
 
 const useStyles = makeStyles({
     root: {
@@ -17,10 +18,10 @@ const useStyles = makeStyles({
         width: 'fit-content'
     },
 
-    container:{
-      display:'flex',
-      flexDirection:'row',
-     
+    container: {
+        display: 'flex',
+        flexDirection: 'row',
+
     },
     price: {
         fontSize: 14,
@@ -32,16 +33,26 @@ const useStyles = makeStyles({
     },
     button: {
         marginTop: 10
+    },
+    date: {
+        fontSize: 12,
+        color: 'grey',
+
     }
 });
 const BrowseItems = (props) => {
 
     useEffect(() => {
         props.onGetItems();
+        // eslint-disable-next-line
     }, []);
 
     const classes = useStyles();
 
+
+    const addToBasket = (item,e) => {
+       props.onAddToBasket(item);
+    }
 
     return (
         <div className={classes.container}>
@@ -51,21 +62,26 @@ const BrowseItems = (props) => {
                 <>
                     {props.items.map(item =>
                         (
-                            <Card className={classes.root}>
+                            <Card className={classes.root} key={item.id}>
                                 <CardContent>
-                                    <Typography className={classes.pos} color="textSecondary">
+                                    <Typography className={classes.pos} color="textSecondary" component="span">
                                         {item.title}
                                         <Divider></Divider>
                                     </Typography>
 
-                                    <Typography className={classes.pos} variant="body2" component="p">
+                                    <Typography className={classes.pos} variant="body2" component="span">
                                         {item.description}
                                         <Divider></Divider>
                                     </Typography>
-                                    <Typography className={classes.pos} variant="body2" component="p" className={classes.price}>
-                                        {item.price}
+                                    <Typography variant="body2" component="span" className={classes.price}>
+                                        {item.price}€
+                                        <Divider></Divider>
                                     </Typography>
-                                    <Button className={classes.button} color="primary" variant="contained">Add to cart</Button>
+                                    <Typography variant="body2" className={classes.date}>
+                                        {item.created_date.substring(0, 10)} / {item.posted_by}
+                                    </Typography>
+                                    {props.isAuthenticated ? <Button className={classes.button} color="primary" variant="contained" onClick={(e) => addToBasket(item, e)} >Add to cart</Button> : <></>}
+
                                 </CardContent>
                             </Card>
                         ))}
@@ -79,6 +95,7 @@ const BrowseItems = (props) => {
 
 const mapStateToProps = (state) => {
     return {
+        isAuthenticated: state.authReducer.token !== null,
         items: state.browseReducer.items,
         loading: state.browseReducer.loading,
         error: state.browseReducer.error
@@ -86,7 +103,8 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = dispatch => {
     return {
-        onGetItems: () => dispatch(actions.getItems())
+        onGetItems: () => dispatch(actions.getItems()),
+        onAddToBasket: (item) => dispatch(actionAdd.addToBasket(item))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(BrowseItems);

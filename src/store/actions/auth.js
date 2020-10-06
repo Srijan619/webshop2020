@@ -8,10 +8,11 @@ export const authStart = () => {
 }
 
 
-export const authSuccess = token => {
+export const authSuccess = (token,username) => {
     return {
         type:actionTypes.AUTH_SUCCESS,
-        token:token
+        token:token,
+        username:username
     }
 }
 
@@ -27,7 +28,8 @@ export const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('expirationDate');
     return {
-        type: actionTypes.AUTH_LOGOUT
+        type: actionTypes.AUTH_LOGOUT,
+        username:null
     }
 }
 export const checkAuthTimeout=expirationTime=>{
@@ -49,7 +51,7 @@ export const authLogin = (username, password)=>{
             const expirationDate=new Date(new Date().getTime()+3600* 1000);
             localStorage.setItem('token',token);
             localStorage.setItem('expirationDate',expirationDate);
-            dispatch(authSuccess(token));
+            dispatch(authSuccess(token,username));
             dispatch(checkAuthTimeout(3600));
         })
         .catch(err =>{
