@@ -7,9 +7,11 @@ import Nav from './components/Nav';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import * as actions from './store/actions/auth';
 
+
 function App(props) {
   useEffect(() => {
     props.onTryAutoSignin();
+ 
   });
 
 
@@ -17,10 +19,10 @@ function App(props) {
     <div>
       <Router>
         <Nav />
-        <Switch {...props}>
-          <Route path="/" exact component={BrowseItems} />
+        <Switch>
+          <Route path="/" exact  component={BrowseItems}/>
           {props.isAuthenticated?<></>:<><Route path="/login" component={Login} /> <Route path="/signup" component={SignUp} /></>}
-          <Route path="/logout" component={BrowseItems} />
+          <Route path="/" component={BrowseItems}/>
           
         </Switch>
       </Router>
@@ -32,7 +34,7 @@ function App(props) {
 
 const mapStateToProps = state => {
   return {
-    isAuthenticated: state.token !== null,
+    isAuthenticated: state.authReducer.token !== null,
   }
 }
 

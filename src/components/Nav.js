@@ -37,7 +37,7 @@ const Nav = (props) => {
                         {
                             props.token ?
                             <>
-                                <Button onClick={() => { props.onSignOut();history.push('/logout') }} color="inherit">Logout</Button>
+                                <Button onClick={() => { props.onSignOut();history.push('/') }} color="inherit">Logout</Button>
                                 <IconButton>  <ShoppingCartIcon style={{fill: "white"}}/></IconButton>
                               
                                 </>
@@ -58,7 +58,7 @@ const Nav = (props) => {
 };
 const mapStateToProps = (state) => {
     return {
-        token: state.token
+        token: state.authReducer.token
     }
 }
 

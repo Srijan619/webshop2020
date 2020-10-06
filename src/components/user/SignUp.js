@@ -62,8 +62,8 @@ const useStyles = makeStyles((theme) => ({
 
 const mapStateToProps = (state) => {
     return {
-        loading: state.loading,
-        error: state.error
+        loading: state.authReducer.loading,
+        error: state.authReducer.error
     }
 }
 

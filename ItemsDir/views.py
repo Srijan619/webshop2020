@@ -13,7 +13,7 @@ index = never_cache(TemplateView.as_view(template_name='index.html')) # Takes in
 class ItemListView(APIView):
 
     def get(self,request):  
-        queryset=Phone.objects.all()
+        queryset=Items.objects.all()
         serializer_class=ItemSerializer(queryset, many=True)
         return Response(serializer_class.data)
         
