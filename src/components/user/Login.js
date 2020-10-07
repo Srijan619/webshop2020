@@ -15,8 +15,7 @@ const Login = (props) => {
         e.preventDefault();
 
         props.onAuth(userName, password);
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        if (!props.error) {
+              if (!props.error) {
             props.history.push('/');
         }
 
@@ -32,16 +31,14 @@ const Login = (props) => {
     }
     return (
         <div>
-            {errorMessage}
-            {
-                props.loading ? <p>loading </p> :
+        
                     <form className={classes.root} noValidate autoComplete="off" onSubmit={handleSubmit}>
+                         {errorMessage}
                         <TextField label="Username" value={userName} onChange={(e) => setUserName(e.target.value)} />
                         <TextField label="Password" type="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
                         <Button type="submit">Login</Button>
                     </form>
 
-            }
         </div>
 
 
@@ -59,8 +56,7 @@ const useStyles = makeStyles((theme) => ({
 
 const mapStateToProps = (state) => {
     return {
-        loading: state.loading,
-        error: state.error
+        error: state.authReducer.error
     }
 }
 

@@ -4,6 +4,7 @@ import Login from './components/user/Login';
 import SignUp from './components/user/SignUp';
 import BrowseItems from './components/Items/BrowseItems';
 import Cart from './components/Items/Cart';
+import MyItems from './components/Items/MyItems';
 import Nav from './components/Nav';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import * as actions from './store/actions/auth';
@@ -25,6 +26,7 @@ function App(props) {
           <Route path="/login" component={Login} /> 
           <Route path="/signup" component={SignUp} />
           <Route path="/cart" component={Cart}/>
+          <Route path="/myitems" component={MyItems}/>
           
         </Switch>
       </Router>

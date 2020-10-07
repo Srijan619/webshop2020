@@ -27,6 +27,7 @@ export const authFail = error => {
 export const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('expirationDate');
+    localStorage.removeItem('username');
     return {
         type: actionTypes.AUTH_LOGOUT,
         username:null
@@ -39,10 +40,10 @@ export const checkAuthTimeout=expirationTime=>{
         },expirationTime * 1000)
     }
 }
-export const authLogin = (username, password)=>{
-    return dispatch=> {
+export const authLogin =  (username, password)=>{
+    return (dispatch)=> {
         dispatch(authStart());
-        axios.post("http://127.0.0.1:8000/rest-auth/login/",{
+         axios.post("http://127.0.0.1:8000/rest-auth/login/",{
             username:username,
             password:password
         })
@@ -51,6 +52,7 @@ export const authLogin = (username, password)=>{
             const expirationDate=new Date(new Date().getTime()+3600* 1000);
             localStorage.setItem('token',token);
             localStorage.setItem('expirationDate',expirationDate);
+            localStorage.setItem('username',username);
             dispatch(authSuccess(token,username));
             dispatch(checkAuthTimeout(3600));
         })
@@ -74,6 +76,7 @@ export const authSignup = (username, email, password1,password2)=>{
             const expirationDate=new Date(new Date().getTime()+3600* 1000);
             localStorage.setItem('token',token);
             localStorage.setItem('expirationDate',expirationDate);
+            localStorage.setItem('username',username);
             dispatch(authSuccess(token));
             dispatch(checkAuthTimeout(3600));
         })
@@ -86,6 +89,7 @@ export const authSignup = (username, email, password1,password2)=>{
 export const authCheckState = ()=>{
     return dispatch => {
         const token=localStorage.getItem('token');
+        const username=localStorage.getItem('username')
         if(token===undefined){
             dispatch(logout());
         }
@@ -95,7 +99,7 @@ export const authCheckState = ()=>{
                 dispatch(logout());
             }
             else{
-                dispatch(authSuccess(token));
+                dispatch(authSuccess(token,username));
                 dispatch(checkAuthTimeout((expirationDate.getTime()-new Date().getTime())/1000));
             }
         }

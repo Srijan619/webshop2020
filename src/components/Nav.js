@@ -14,14 +14,16 @@ import Cart from '../components/Items/Cart'
 import { Typography } from '@material-ui/core';
 
 
+
 const Nav = (props) => {
     const classes = useStyles();
     const history = useHistory();
     return (
-        <div className={classes.root}>
+        <div>
             <AppBar>
                 <Toolbar>
-                    <Button color="inherit" onClick={() => { history.push('/') }} className={classes.title}>Home</Button>
+                 
+                    <Button variant="outlined" color="inherit" onClick={() => { history.push('/') }} className={classes.title}>Home</Button>
 
                     <div className={classes.search}>
                         <div className={classes.searchIcon}>
@@ -41,16 +43,16 @@ const Nav = (props) => {
                             props.token ?
                                 <div className={classes.cartButton}>
                                 <p >{props.username}</p>
-                                <Button onClick={() => { props.onSignOut();history.push('/') }} color="inherit">My Items</Button>                             
-                                <Button onClick={() => { props.onSignOut();history.push('/') }} color="inherit">Logout</Button>
+                                <Button  onClick={() => { history.push('/myitems') }} color="inherit">My Items</Button>                             
+                                <Button  onClick={() => { props.onSignOut();history.push('/') }} color="inherit">Logout</Button>
                                 <Cart></Cart>
                               
                                 </div>
                                 :
                                 <>
 
-                                    <Button onClick={() => { history.push('/login') }} color="inherit">Login</Button>
-                                    <Button onClick={() => { history.push('/signup') }} color="inherit">Sign Up</Button>
+                                    <Button  onClick={() => { history.push('/login') }} color="inherit">Login</Button>
+                                    <Button   onClick={() => { history.push('/signup') }} color="inherit">Sign Up</Button>
                                 </> 
                         }
 
@@ -75,9 +77,6 @@ const mapDispatchToProps = dispatch => {
 }
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-    },
     title: {
         justifyContent: 'flex-start',
         width: 'fit-content'

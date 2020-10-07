@@ -75,9 +75,12 @@ const Cart = (props) => {
 
                     </Card>
                     <Card className={classes.total}>
+                    <Button variant="contained"  style={{float:"right"}}>CheckOut</Button>
                     <ListItemText primary={"Total"} style={{textAlign:'center' }}></ListItemText>
                     <ListItemText primary={sub_total} style={{textAlign:'right',marginRight:20 }}></ListItemText>
-                    </Card> </Card> :
+                    
+                   </Card> 
+     </Card> :
                 <></>
             }
 

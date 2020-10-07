@@ -16,7 +16,10 @@ const SignUp= (props) => {
         e.preventDefault();
 
         props.onSignUp(userName, email, password1,password2);
-        await new Promise(resolve => setTimeout(resolve, 1000)); //Because error is null at the beginning, just a little trick to wait for it to update
+        
+        //At first the error is null, so have to set time out
+        await new  Promise(resolve => setTimeout(resolve, 2000));
+
         if (!props.error) {
             props.history.push('/');
         }
@@ -33,10 +36,11 @@ const SignUp= (props) => {
     }
     return (
         <div>
-            {errorMessage}
+         
             {
                 props.loading ? <p>loading </p> :
                     <form className={classes.root} noValidate autoComplete="off" onSubmit={handleSubmit}>
+                          {errorMessage}
                         <TextField label="Username" value={userName} onChange={(e) => setUserName(e.target.value)} />
                         <TextField label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                         <TextField label="Password" type="Password" value={password1} onChange={(e) => setPassword1(e.target.value)} />

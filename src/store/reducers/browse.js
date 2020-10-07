@@ -28,6 +28,12 @@ const fetchFail=(state,action)=>{
     });
 }
 
+const addFail=(state,action)=>{
+    return updateObject(state,{
+        error:action.error,
+        loading:false
+    });
+}
 
 
  const browseReducer=(state=initialState, action)=>{

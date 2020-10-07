@@ -11,16 +11,18 @@ import * as actionAdd from '../../store/actions/cartAction'
 
 const useStyles = makeStyles({
     root: {
-        marginTop: '5%',
         marginRight: '1%',
-        maxWidth: 300,
-        minWidth: 300,
+        marginBottom: '2%',
+        maxWidth: 400,
+        minWidth: 400,
         width: 'fit-content'
     },
 
     container: {
+        marginTop: '5%',
+        marginLeft:'1%',
         display: 'flex',
-        flexDirection: 'row',
+        flexFlow: 'row wrap',
 
     },
     price: {
@@ -53,15 +55,17 @@ const BrowseItems = (props) => {
     const addToBasket = (item,e) => {
        props.onAddToBasket(item);
     }
+    const data= Array.from(props.items)
 
     return (
         <div className={classes.container}>
+           
             {props.loading ? <div>Loading..</div>
                 :
 
                 <>
-                    {props.items.map(item =>
-                        (
+                    {data.map(item =>
+                        
                             <Card className={classes.root} key={item.id}>
                                 <CardContent>
                                     <Typography className={classes.pos} color="textSecondary" component="span">
@@ -84,7 +88,7 @@ const BrowseItems = (props) => {
 
                                 </CardContent>
                             </Card>
-                        ))}
+                        )}
 
                 </>
             }

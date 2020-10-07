@@ -24,7 +24,6 @@ export const fetchFail = error => {
     }
 }
 
-
 export const getItems=()=>{
     return async dispatch=>{
         dispatch(fetchStart)
@@ -35,6 +34,26 @@ export const getItems=()=>{
         } catch (err) {
             dispatch(fetchFail(err));
         }
+    }
+
+}
+
+export const addItems=(title,description,price,posted_by)=>{
+    return async dispatch=>{
+        dispatch(fetchStart)
+        await axios.post("http://127.0.0.1:8000/api/",{
+            title:title,
+            description:description,
+            price:price,
+            posted_by:posted_by
+        })
+        .then(res => {
+            dispatch(fetchSuccess(res.data))
+            dispatch(getItems())
+        })
+        .catch(err =>{
+            dispatch(fetchFail(err))
+        })
     }
 
 }
