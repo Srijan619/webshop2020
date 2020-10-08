@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../store/actions/auth';
+import * as actionsCart from '../store/actions/cartAction';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -44,7 +45,7 @@ const Nav = (props) => {
                                 <div className={classes.cartButton}>
                                 <p >{props.username}</p>
                                 <Button  onClick={() => { history.push('/myitems') }} color="inherit">My Items</Button>                             
-                                <Button  onClick={() => { props.onSignOut();history.push('/') }} color="inherit">Logout</Button>
+                                <Button  onClick={() => { props.onSignOut();history.push('/') ;props.onClearBasket();}} color="inherit">Logout</Button>
                                 <Cart></Cart>
                               
                                 </div>
@@ -72,7 +73,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onSignOut: () => dispatch(actions.logout())
+        onSignOut: () => dispatch(actions.logout()),
+        onClearBasket:()=>dispatch(actionsCart.clearBasket())
     }
 }
 

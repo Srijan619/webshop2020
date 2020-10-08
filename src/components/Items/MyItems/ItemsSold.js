@@ -5,10 +5,9 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import AddItems from '../Items/AddItems'
 import { connect } from 'react-redux';
-import * as actions from '../../store/actions/browse'
-import * as actionAdd from '../../store/actions/cartAction'
+import * as actions from '../../../store/actions/browse'
+import * as actionAdd from '../../../store/actions/cartAction'
 
 const useStyles = makeStyles({
     root: {
@@ -43,7 +42,7 @@ const useStyles = makeStyles({
 
     }
 });
-const MyItems = (props) => {
+const ItemsSold = (props) => {
 
     useEffect(() => {
         props.onGetItems();
@@ -52,15 +51,11 @@ const MyItems = (props) => {
 
     const classes = useStyles();
 
-
-    const addToBasket = (item, e) => {
-        props.onAddToBasket(item);
-    }
-
     const data= Array.from(props.items) // Converts dictionary to array which solves map problem
     return (
         <>
-            <AddItems></AddItems>
+            
+            <Typography variant="h5" style={{marginLeft:'1%'}}>Items Sold</Typography>
             <div className={classes.container}>
 
                 {props.loading ? <div>Loading..</div>
@@ -68,7 +63,7 @@ const MyItems = (props) => {
 
                     <>
                         {data.map(item => {
-                            if (item.posted_by === props.username)
+                            if (item.sold_status && item.posted_by === props.username)
                                 return (
                                     <Card className={classes.root} key={item.id}>
                                         <CardContent>
@@ -118,4 +113,4 @@ const mapDispatchToProps = dispatch => {
         onAddToBasket: (item) => dispatch(actionAdd.addToBasket(item))
     }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(MyItems);
+export default connect(mapStateToProps, mapDispatchToProps)(ItemsSold);

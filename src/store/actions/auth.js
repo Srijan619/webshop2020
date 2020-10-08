@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as actionTypes from './actionTypes';
+import * as cartAction from '../actions/cartAction'
 
 export const authStart = () => {
     return {
@@ -28,6 +29,7 @@ export const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('expirationDate');
     localStorage.removeItem('username');
+ 
     return {
         type: actionTypes.AUTH_LOGOUT,
         username:null
@@ -92,11 +94,13 @@ export const authCheckState = ()=>{
         const username=localStorage.getItem('username')
         if(token===undefined){
             dispatch(logout());
+            dispatch(cartAction.clearBasket())
         }
         else{
             const expirationDate=new Date(localStorage.getItem('expirationDate'));
             if(expirationDate<= new Date()){
                 dispatch(logout());
+                dispatch(cartAction.clearBasket())
             }
             else{
                 dispatch(authSuccess(token,username));

@@ -8,6 +8,7 @@ class Items(models.Model):
     sold_status=models.BooleanField(default=False)
     created_date = models.DateTimeField(auto_now_add=True)
     posted_by=models.CharField(max_length=45, default="")
+    sold_to=models.CharField(max_length=45, default="",blank=True)
 
     def __str__(self):
         return self.title

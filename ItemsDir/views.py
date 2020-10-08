@@ -23,3 +23,25 @@ class ItemListView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def put(self,request,id):
+        serializer= ItemSerializer(pk=id,data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ItemDetailView(APIView):
+
+    def get(self,request,id):  
+        queryset=Items.objects.get(id=id)
+        serializer_class=ItemSerializer(queryset)
+        return Response(serializer_class.data)
+
+    def put(self,request,id):
+        queryset=Items.objects.get(id=id)
+        serializer= ItemSerializer(queryset,data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

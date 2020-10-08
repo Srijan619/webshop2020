@@ -24,6 +24,17 @@ export const addFail = error => {
     }
 }
 
+export const clearBasket=()=>{
+    return {
+        type:actionTypes.CLEARCART,
+    }
+}
+export const removeCartItem=(item)=>{
+    return {
+        type:actionTypes.REMOVECARTITEM,
+        items:item
+    }
+}
 
 export const addToBasket=(item)=>{
     return  dispatch=>{

@@ -7,21 +7,21 @@ const initialState={
     loading:false       
 }
 
-const fetchStart=(state,action)=>{
+const checkOutStart=(state,action)=>{
     return updateObject(state,{
         error:null,
         loading:true
     });
 }
 
-const fetchSuccess=(state,action)=>{
+const checkOutSuccess=(state,action)=>{
     return updateObject(state,{
         items:action.items,
         error:null,
         loading:false
     });
 }
-const fetchFail=(state,action)=>{
+const checkOutFail=(state,action)=>{
     return updateObject(state,{
         error:action.error,
         loading:false
@@ -29,15 +29,13 @@ const fetchFail=(state,action)=>{
 }
 
 
-
-
- const browseReducer=(state=initialState, action)=>{
+ const checkOutReducer=(state=initialState, action)=>{
     switch(action.type){
-        case actionTypes.FETCH_START: return fetchStart(state,action);
-        case actionTypes.FETCH_SUCCESS: return fetchSuccess(state,action);
-        case actionTypes.FETCH_FAIL: return fetchFail(state,action);
+        case actionTypes.CHECKOUT_START: return checkOutStart(state,action);
+        case actionTypes.CHECKOUT_SUCCESS: return checkOutSuccess(state,action);
+        case actionTypes.CHECKOUT_FAIL: return checkOutFail(state,action);
         default:
             return state;
     }
 }
-export default browseReducer;
+export default checkOutReducer;

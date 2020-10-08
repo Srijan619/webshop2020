@@ -44,28 +44,54 @@ const useStyles = makeStyles({
 });
 const BrowseItems = (props) => {
 
-    useEffect(() => {
-        props.onGetItems();
-        // eslint-disable-next-line
+    useEffect( () => {
+        props.onGetItems(); //Filters On Sale Items
+        
+    // eslint-disable-next-line
+
     }, []);
 
     const classes = useStyles();
 
 
     const addToBasket = (item,e) => {
-       props.onAddToBasket(item);
+        
+       let duplicate=false;
+       const dataCart=Array.from(props.itemsCart);
+      
+       
+       if(dataCart.length!==0){
+         dataCart.map(data=>{
+           if(data.id===item.id){
+            duplicate=true;
+           }
+       })}
+      if(!duplicate){
+        props.onAddToBasket(item)
+      }
     }
+  
     const data= Array.from(props.items)
 
+    let errorMessage = null;
+    if (props.error) {
+        errorMessage = (
+            <p>{props.error.message}</p>
+        );
+    }
     return (
         <div className={classes.container}>
-           
+            {errorMessage}
+            {errorMessage?{errorMessage}:
+          <>
             {props.loading ? <div>Loading..</div>
                 :
 
                 <>
                     {data.map(item =>
-                        
+                        {
+                            if (!item.sold_status)
+                                return (
                             <Card className={classes.root} key={item.id}>
                                 <CardContent>
                                     <Typography className={classes.pos} color="textSecondary" component="span">
@@ -84,14 +110,17 @@ const BrowseItems = (props) => {
                                     <Typography variant="body2" className={classes.date}>
                                         {item.created_date.substring(0, 10)} / {item.posted_by}
                                     </Typography>
-                                    {props.isAuthenticated ? <Button className={classes.button} color="primary" variant="contained" onClick={(e) => addToBasket(item, e)} >Add to cart</Button> : <></>}
+                                    {props.isAuthenticated && item.posted_by!==props.username ? <Button className={classes.button} color="primary" variant="contained" onClick={(e) => addToBasket(item, e)} >Add to cart</Button> : <></>}
 
                                 </CardContent>
                             </Card>
+                                )}
                         )}
 
                 </>
             }
+              </>
+        }
         </div>
 
     );
@@ -102,7 +131,9 @@ const mapStateToProps = (state) => {
         isAuthenticated: state.authReducer.token !== null,
         items: state.browseReducer.items,
         loading: state.browseReducer.loading,
-        error: state.browseReducer.error
+        error: state.browseReducer.error,
+        itemsCart:state.cartReducer.items,
+        username:state.authReducer.username
     }
 }
 const mapDispatchToProps = dispatch => {

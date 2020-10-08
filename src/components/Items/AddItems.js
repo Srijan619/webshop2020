@@ -49,9 +49,14 @@ const AddItems = (props) => {
          props.onAddItems(title,description,price,props.posted_by);
       
         //At first the error is null, so have to set time out
-        // await new  Promise(resolve => setTimeout(resolve, 2000));
-     
+        await new  Promise(resolve => setTimeout(resolve, 1000));
+       if(!props.error){
         history.push('/myitems')
+       }
+        setTitle("")
+        setDescription("")
+        setPrice("")
+        setOpen(false)
 
         
     } 
@@ -67,7 +72,7 @@ const AddItems = (props) => {
            
             <div className={classes.button} >
                 <Button onClick={() => { setOpen(!open); }} color="primary" variant="outlined"
-                  style={{marginTop:'4%'}}>Add Item </Button>
+                  style={{marginTop:'4%',marginBottom:'1%'}}>Add Item </Button>
             </div>
             {open ?
                 <Card className={classes.card}>
