@@ -24,44 +24,21 @@ export const fetchFail = error => {
     }
 }
 
-// export const getItems=(all)=>{
-//     return async dispatch=>{
-//         dispatch(fetchStart)
-//         try {
-//             const res = await axios.get("http://127.0.0.1:8000/api/");
-//             const items = res.data;
-//             let filteredData=[];
-//             if(all===true){
-//                 items.map(i=>{
-//                     if(!i.sold_status)
-//                     {
-//                         filteredData.push(i)
-                    
-//                     }
-//                 })
-//                 dispatch(fetchSuccess(filteredData));
-//             }
-//             else if(all===false){
-//                filteredData=[]
-//                items.map(i=>{
-//                 if(i.sold_status)
-//                 {
-//                     filteredData.push(i)
-                
-//                 }
-//             })
-//             dispatch(fetchSuccess(filteredData));
-//             }
-//             else{
-//                 dispatch(fetchSuccess(items))
-//             }
-           
-//         } catch (err) {
-//             dispatch(fetchFail(err));
-//         }
-//     }
+//Search items need to be done in the server side
+export const searchItems = (keyword)=>{
+    return async dispatch=>{
+        dispatch(fetchStart)
+        try {
+            const res = await axios.get("http://127.0.0.1:8000/api/search/?search="+keyword);
+            const items = res.data;
+            dispatch(fetchSuccess(items));
+        } catch (err) {
+            dispatch(fetchFail(err));
+        }
+    }
 
-// }
+}
+
 export const getItems=()=>{
     return async dispatch=>{
         dispatch(fetchStart)
@@ -96,3 +73,4 @@ export const addItems=(title,description,price,posted_by)=>{
     }
 
 }
+

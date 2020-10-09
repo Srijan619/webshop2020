@@ -70,7 +70,7 @@ const Cart = (props) => {
     return (
         <div>
             <div className={classes.button} >
-                <IconButton onClick={() => { setOpen(!open); }}>
+                <IconButton onClick={() => setOpen(!open)}>
                     <ShoppingCartIcon style={{ fill: "white" }} />
                     <Typography  style={{ color: "white" }} >{data.length}</Typography>
                    

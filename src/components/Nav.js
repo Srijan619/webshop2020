@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../store/actions/auth';
 import * as actionsCart from '../store/actions/cartAction';
+import * as actionsBrowse from '../store/actions/browse';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -19,6 +20,13 @@ import { Typography } from '@material-ui/core';
 const Nav = (props) => {
     const classes = useStyles();
     const history = useHistory();
+    
+    const data=Array.from(props.items);
+
+    const handleOnInputChange = (event) => {
+        const query = event.target.value;
+        props.onSearchItem(query)   
+    };
     return (
         <div>
             <AppBar>
@@ -31,6 +39,7 @@ const Nav = (props) => {
                             <SearchIcon />
                         </div>
                         <InputBase
+                            onChange={(e)=>{handleOnInputChange(e)}}
                             placeholder="Search…"
                             classes={{
                                 root: classes.inputRoot,
@@ -67,14 +76,16 @@ const Nav = (props) => {
 const mapStateToProps = (state) => {
     return {
         token: state.authReducer.token,
-        username:state.authReducer.username
+        username:state.authReducer.username,
+        items:state.browseReducer.items,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         onSignOut: () => dispatch(actions.logout()),
-        onClearBasket:()=>dispatch(actionsCart.clearBasket())
+        onClearBasket:()=>dispatch(actionsCart.clearBasket()),
+        onSearchItem:(item)=>dispatch(actionsBrowse.searchItems(item))
     }
 }
 

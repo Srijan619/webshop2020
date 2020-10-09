@@ -28,6 +28,13 @@ const fetchFail=(state,action)=>{
     });
 }
 
+const searchItems=(state,action)=>{
+    return updateObject(state,{
+        items:action.items,
+        error:null,
+        loading:false
+    });
+}
 
 
 
@@ -36,6 +43,7 @@ const fetchFail=(state,action)=>{
         case actionTypes.FETCH_START: return fetchStart(state,action);
         case actionTypes.FETCH_SUCCESS: return fetchSuccess(state,action);
         case actionTypes.FETCH_FAIL: return fetchFail(state,action);
+        case actionTypes.SEARCHITEMS: return searchItems(state,action);
         default:
             return state;
     }

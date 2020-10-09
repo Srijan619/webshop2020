@@ -27,6 +27,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1','test-django-react-app1.herokuapp.com']
 
+#TO use filtering
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
+
 
 # Application definition
 
@@ -38,6 +43,7 @@ INSTALLED_APPS = [
     'ItemsDir',
     'django.contrib.sites',
     'allauth',
+    'django_filters',
     'allauth.account',
     'rest_auth.registration',
     'django.contrib.admin',

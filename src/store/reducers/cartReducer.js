@@ -28,8 +28,6 @@ const addFail=(state,action)=>{
     });
 }
 const removeItem=(state,action)=>{
-    console.log(state)
-    console.log(action)
     return updateObject(state,{
         items:state.items.filter((item)=>item.id!==action.items.id),
         error:action.error,

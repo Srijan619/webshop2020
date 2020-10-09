@@ -7,6 +7,10 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.views.generic import TemplateView
 from django.views.decorators.cache import never_cache
+from rest_framework import generics
+
+from rest_framework import filters
+
 # Create your views here.
 index = never_cache(TemplateView.as_view(template_name='index.html')) # Takes index from the react side
 
@@ -45,3 +49,10 @@ class ItemDetailView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#Used to filter the Items
+class ItemSearchView(generics.ListAPIView):
+    search_fields = ['title','description']
+    filter_backends = (filters.SearchFilter,)
+    queryset=Items.objects.all()
+    serializer_class=ItemSerializer
