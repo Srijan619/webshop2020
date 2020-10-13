@@ -82,7 +82,7 @@ const BrowseItems = (props) => {
     return (
         <div className={classes.container}>
             {errorMessage}
-            {errorMessage?{errorMessage}:
+           
           <>
             {props.loading ? <div>Loading..</div>
                 :
@@ -90,7 +90,7 @@ const BrowseItems = (props) => {
                 <>
                     {data.map(item =>
                         {
-                            if (!item.sold_status)
+                            if (!item.sold_status&&item.posted_by!==props.username)
                                 return (
                             <Card className={classes.root} key={item.id}>
                                 <CardContent>
@@ -120,7 +120,7 @@ const BrowseItems = (props) => {
                 </>
             }
               </>
-        }
+     
         </div>
 
     );

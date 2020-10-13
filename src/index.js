@@ -9,9 +9,14 @@ import thunk from 'redux-thunk';
 import authReducer from './store/reducers/auth'
 import browseReducer from './store/reducers/browse'
 import cartReducer from './store/reducers/cartReducer'
+import checkoutReducer from './store/reducers/checkoutReducer'
+import editItemReducer from './store/reducers/editItemReducer'
+import changePasswordReducer from './store/reducers/changePasswordReducer'
+
+
 const composeEnhances = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
-const store = createStore(combineReducers({authReducer,browseReducer,cartReducer}), composeEnhances(
+const store = createStore(combineReducers({authReducer,browseReducer,cartReducer,checkoutReducer,editItemReducer,changePasswordReducer}), composeEnhances(
   applyMiddleware(thunk)
 ))
 

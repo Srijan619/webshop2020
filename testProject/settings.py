@@ -27,11 +27,16 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1','test-django-react-app1.herokuapp.com']
 
-#TO use filtering
+
 REST_FRAMEWORK = {
+   
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
-
 
 # Application definition
 
@@ -144,3 +149,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 ACCOUNT_EMAIL_VERIFICATION='none'
 ACCOUNT_AUTHENTICATION_METHOD='username'
 ACCOUNT_EMAIL_REQUIRED=False
+
+OLD_PASSWORD_FIELD_ENABLED = True
+REST_USE_JWT = True

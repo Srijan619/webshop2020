@@ -53,6 +53,7 @@ const Nav = (props) => {
                             props.token ?
                                 <div className={classes.cartButton}>
                                 <p >{props.username}</p>
+                                <Button  onClick={() => { history.push('/change_password') }} color="inherit">Change Password</Button>
                                 <Button  onClick={() => { history.push('/myitems') }} color="inherit">My Items</Button>                             
                                 <Button  onClick={() => { props.onSignOut();history.push('/') ;props.onClearBasket();}} color="inherit">Logout</Button>
                                 <Cart></Cart>

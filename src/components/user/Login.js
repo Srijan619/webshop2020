@@ -31,6 +31,7 @@ const Login = (props) => {
     }
     return (
         <div>
+            {errorMessage}
         
                     <form className={classes.root} noValidate autoComplete="off" onSubmit={handleSubmit}>
                          {errorMessage}

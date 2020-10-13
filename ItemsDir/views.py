@@ -8,26 +8,29 @@ from rest_framework import status
 from django.views.generic import TemplateView
 from django.views.decorators.cache import never_cache
 from rest_framework import generics
-
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import filters
 
 # Create your views here.
 index = never_cache(TemplateView.as_view(template_name='index.html')) # Takes index from the react side
 
 class ItemListView(APIView):
-
+    
     def get(self,request):  
         queryset=Items.objects.all()
         serializer_class=ItemSerializer(queryset, many=True)
         return Response(serializer_class.data)
-        
+
+    @permission_classes((IsAuthenticated,))    
     def post(self,request):
         serializer= ItemSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+    @permission_classes((IsAuthenticated,))    
     def put(self,request,id):
         serializer= ItemSerializer(pk=id,data=request.data)
         if serializer.is_valid():
@@ -42,6 +45,7 @@ class ItemDetailView(APIView):
         serializer_class=ItemSerializer(queryset)
         return Response(serializer_class.data)
 
+    @permission_classes((IsAuthenticated,))    
     def put(self,request,id):
         queryset=Items.objects.get(id=id)
         serializer= ItemSerializer(queryset,data=request.data)
