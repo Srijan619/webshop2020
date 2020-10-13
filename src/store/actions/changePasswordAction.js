@@ -4,14 +4,16 @@ import * as cartAction from '../actions/cartAction'
 
 export const changePasswordStart = () => {
     return {
-        type:actionTypes.CHANGEPASSWORD_START
+        type:actionTypes.CHANGEPASSWORD_START,
+        status:null
     }
 }
 
 
-export const changePasswordSuccess = () => {
+export const changePasswordSuccess = (status) => {
     return {
         type:actionTypes.CHANGEPASSWORD_SUCCESS,
+        status:status
     }
 }
 
@@ -19,7 +21,8 @@ export const changePasswordSuccess = () => {
 export const changePasswordFail = error => {
     return {
         type:actionTypes.CHANGEPASSWORD_FAIL,
-        error:error
+        error:error,
+        status:null
     }
 }
 
@@ -33,11 +36,12 @@ export const authChangePassword =  (oldPassword, newPassword1,newPassword2)=>{
             new_password2:newPassword2
         },{
             headers: {
-                Authorization: 'Basic ' + token
+                Authorization: 'JWT ' + token
               }
         })
         .then(res => {
-            dispatch(changePasswordSuccess());
+            
+            dispatch(changePasswordSuccess(res.status));
         })
         .catch(err =>{
             dispatch(changePasswordFail(err))

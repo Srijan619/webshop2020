@@ -2,6 +2,7 @@ import * as actionTypes from '../actions/actionTypes';
 import {updateObject} from '../utility';
 
 const initialState={
+    status:null,
     error:null,
     loading:false       
 }
@@ -15,8 +16,7 @@ const changePasswordStart=(state,action)=>{
 
 const changePasswordSuccess=(state,action)=>{
     return updateObject(state,{
-        token:action.token,
-        username:action.username,
+        status:action.status,
         error:null,
         loading:false
     });

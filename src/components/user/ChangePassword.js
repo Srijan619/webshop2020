@@ -2,6 +2,8 @@ import React, {  useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, TextField } from '@material-ui/core';
 import { connect } from 'react-redux';
+import Snackbar from '@material-ui/core/Snackbar';
+import  MuiAlert  from '@material-ui/lab/Alert';
 import * as actionChangePassword from '../../store/actions/changePasswordAction';
 
 const ChangePassword = (props) => {
@@ -10,31 +12,43 @@ const ChangePassword = (props) => {
     const [oldPassword, setoldPassword] = useState("");
     const [newPassword1, setNewPassword1] = useState("");
     const [newPassword2, setNewPassword2] = useState("");
+    const [open,setOpen]=useState(true)
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         props.onChangePassword(oldPassword,newPassword1,newPassword2);
-            if (!props.error) {
-            props.history.push('/');
-        }
+        setoldPassword("")
+        setNewPassword1("")
+        setNewPassword2("")
 
     }
  
     const classes = useStyles();
-    let errorMessage = null;
+    let message = null;
     if (props.error) {
-
-        errorMessage = (
-            <p>{props.error.message}</p>
+        message = (
+            <Snackbar open={open} autoHideDuration={1000}  onClose={() => setOpen(!open)} >
+            <Alert  severity="error">
+              {props.error.message}
+            </Alert>
+          </Snackbar>
         );
+    }
+    if(props.status===200)
+    {
+        message=(<Snackbar  open={open} autoHideDuration={1000}  onClose={() => setOpen(!open)} >
+            <Alert severity="success">
+              Successfully Saved!
+            </Alert>
+          </Snackbar>)
     }
     return (
         <div>
-        {errorMessage}
+     
                     <form className={classes.root} noValidate autoComplete="off" onSubmit={handleSubmit}>
-                         {errorMessage}
+                    {message}
                         <TextField label="Old Password" type="Password" value={oldPassword} onChange={(e) => setoldPassword(e.target.value)} />
                         <TextField label="New Password" type="Password" value={newPassword1} onChange={(e) => setNewPassword1(e.target.value)} />
                         <TextField label="New Password Again" type="Password" value={newPassword2} onChange={(e) => setNewPassword2(e.target.value)} />
@@ -55,10 +69,13 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column'
     }
 }));
-
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
 const mapStateToProps = (state) => {
     return {
-        error: state.changePasswordReducer.error
+        error: state.changePasswordReducer.error,
+        status:state.changePasswordReducer.status
     }
 }
 

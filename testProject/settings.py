@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-
+import datetime
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -32,8 +32,7 @@ REST_FRAMEWORK = {
    
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
+       
     ),
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
@@ -152,3 +151,8 @@ ACCOUNT_EMAIL_REQUIRED=False
 
 OLD_PASSWORD_FIELD_ENABLED = True
 REST_USE_JWT = True
+
+##JWT AUTH
+JWT_AUTH ={
+     'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=3600) #Setting Expiration to one hour
+}
