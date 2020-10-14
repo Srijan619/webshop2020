@@ -12,6 +12,8 @@ import * as actionAdd from '../../../store/actions/cartAction'
 import * as actionEdit from '../../../store/actions/editItem'
 import EditIcon from '@material-ui/icons/Edit';
 import DoneIcon from '@material-ui/icons/Done';
+import Snackbar from '@material-ui/core/Snackbar';
+import  MuiAlert  from '@material-ui/lab/Alert';
 import { IconButton } from '@material-ui/core';
 
 const useStyles = makeStyles({
@@ -27,7 +29,8 @@ const useStyles = makeStyles({
         marginTop: '1%',
         marginLeft: '1%',
         display: 'flex',
-        flexFlow: 'row wrap',
+        flexDirection:'row',
+        overflow:'scroll'
 
     },
     price: {
@@ -53,6 +56,7 @@ const ItemsOnSale = (props) => {
     const [id, setId] = useState(0)
     const [saveDisabled, setSaveDisabled] = useState(true)
     const [price, setPrice] = useState(0)
+    const [open,setOpen]=useState(true)
 
     useEffect(() => {
         props.onGetItems();
@@ -66,22 +70,31 @@ const ItemsOnSale = (props) => {
         setSaveDisabled(!saveDisabled)
 
     }
-    const saveEdit = (e, id) => {
-        props.onEditItem(id, price)
+    const saveEdit = (e, item) => {
+        props.onEditItem(item, price)
+        setOpen(true)
         setDisabled(!disabled)
         setSaveDisabled(!saveDisabled)
+        props.onGetItems()
     }
+  
     let message = null;
-    if (props.error || props.errorEdit) {
+    if( props.errorEdit) {
         message = (
-            <div>
-                <p>{props.error.message}</p>
-                <p>{props.errorEdit.message}</p>
-            </div>
+            <Snackbar open={open} autoHideDuration={1000}  onClose={() => setOpen(!open)} >
+            <Alert  severity="error">
+              {props.errorEdit.message}
+            </Alert>
+          </Snackbar>
         );
     }
-    else if(props.editStatus===201) {
-        message = (<p>Successfully Saved</p>)
+    if(props.editStatus===201)
+    {
+        message=(<Snackbar  open={open} autoHideDuration={1000}  onClose={() => setOpen(!open)} >
+            <Alert severity="success">
+              Successfully Saved!
+            </Alert>
+          </Snackbar>)
     }
     const data = Array.from(props.items) // Converts dictionary to array which solves map problem
     return (
@@ -99,11 +112,10 @@ const ItemsOnSale = (props) => {
                                 return (
                                     <Card className={classes.root} key={item.id}>
                                         <CardContent>
-
                                             <Typography className={classes.pos} color="textSecondary" component="span">
                                                 {item.title}
                                                 <IconButton onClick={(e) => { enableEdit(e, item.id) }}><EditIcon></EditIcon></IconButton>
-                                                <IconButton onClick={(e) => { saveEdit(e, item.id) }} disabled={item.id === id ? saveDisabled : true}><DoneIcon ></DoneIcon></IconButton>
+                                                <IconButton onClick={(e) => { saveEdit(e, item) }} disabled={item.id === id ? saveDisabled : true}><DoneIcon ></DoneIcon></IconButton>
                                                 <Divider></Divider>
                                             </Typography>
 
@@ -111,8 +123,8 @@ const ItemsOnSale = (props) => {
                                                 {item.description}
                                                 <Divider></Divider>
                                             </Typography>
-                                            <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                                <TextField onChange={(e) => { setPrice(e.target.value) }} disabled={item.id === id ? disabled : true} className={classes.price} defaultValue={item.price} >
+                                            <div style={{ display: 'flex', flexDirection: 'row' }} >
+                                                <TextField  onChange={(e) => { setPrice(e.target.value) }} disabled={item.id === id ? disabled : true} className={classes.price} defaultValue={item.price} >
                                                 </TextField>
                                                 <span>€</span>
                                             </div>
@@ -136,12 +148,13 @@ const ItemsOnSale = (props) => {
 
     );
 };
-
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
 const mapStateToProps = (state) => {
     return {
         items: state.browseReducer.items,
         loading: state.browseReducer.loading,
-        error: state.browseReducer.error,
         username: state.authReducer.username,
         errorEdit: state.editItemReducer.error,
         editStatus:state.editItemReducer.status
@@ -151,7 +164,7 @@ const mapDispatchToProps = dispatch => {
     return {
         onGetItems: () => dispatch(actions.getItems()),
         onAddToBasket: (item) => dispatch(actionAdd.addToBasket(item)),
-        onEditItem: (id, price) => dispatch(actionEdit.editItem(id, price))
+        onEditItem: (item, price) => dispatch(actionEdit.editItem(item, price))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ItemsOnSale);

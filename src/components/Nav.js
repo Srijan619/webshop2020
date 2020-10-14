@@ -10,10 +10,8 @@ import Button from '@material-ui/core/Button';
 import { useHistory } from "react-router-dom";
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import IconButton from '@material-ui/core/IconButton';
 import Cart from '../components/Items/Cart'
-import { Typography } from '@material-ui/core';
+import axios from 'axios';
 
 
 
@@ -27,6 +25,10 @@ const Nav = (props) => {
         const query = event.target.value;
         props.onSearchItem(query)   
     };
+    const generateRandomData=async ()=>{
+       return await axios.get("http://127.0.0.1:8000/random/")
+       
+    }
     return (
         <div>
             <AppBar>
@@ -53,7 +55,9 @@ const Nav = (props) => {
                             props.token ?
                                 <div className={classes.cartButton}>
                                 <p >{props.username}</p>
-                                <Button  onClick={() => { history.push('/change_password') }} color="inherit">Change Password</Button>
+                                {props.username==="admin"?<Button  onClick={()=>{generateRandomData();window.location.reload(false);}} color="inherit">Generate Random Data</Button>:<></>}
+                                
+                                <Button  onClick={() => { history.push('/change_password'); }} color="inherit">Change Password</Button>
                                 <Button  onClick={() => { history.push('/myitems') }} color="inherit">My Items</Button>                             
                                 <Button  onClick={() => { props.onSignOut();history.push('/') ;props.onClearBasket();}} color="inherit">Logout</Button>
                                 <Cart></Cart>
@@ -86,7 +90,8 @@ const mapDispatchToProps = dispatch => {
     return {
         onSignOut: () => dispatch(actions.logout()),
         onClearBasket:()=>dispatch(actionsCart.clearBasket()),
-        onSearchItem:(item)=>dispatch(actionsBrowse.searchItems(item))
+        onSearchItem:(item)=>dispatch(actionsBrowse.searchItems(item)),
+      
     }
 }
 

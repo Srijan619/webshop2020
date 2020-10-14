@@ -46,7 +46,7 @@ const BrowseItems = (props) => {
 
     useEffect( () => {
         props.onGetItems(); //Filters On Sale Items
-        
+        console.log(data)
     // eslint-disable-next-line
 
     }, []);

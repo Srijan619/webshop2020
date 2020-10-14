@@ -22,7 +22,8 @@ const useStyles = makeStyles({
         marginTop: '1%',
         marginLeft:'1%',
         display: 'flex',
-        flexFlow: 'row wrap',
+        flexDirection:'row',
+        overflow:'scroll'
 
     },
     price: {

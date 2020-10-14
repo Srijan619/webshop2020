@@ -40,7 +40,6 @@ export const authChangePassword =  (oldPassword, newPassword1,newPassword2)=>{
               }
         })
         .then(res => {
-            
             dispatch(changePasswordSuccess(res.status));
         })
         .catch(err =>{

@@ -2,7 +2,7 @@ import * as actionTypes from '../actions/actionTypes';
 import {updateObject} from '../utility';
 
 const initialState={
-    items:[],
+    status:null,
     error:null,
     loading:false       
 }
@@ -16,7 +16,7 @@ const checkOutStart=(state,action)=>{
 
 const checkOutSuccess=(state,action)=>{
     return updateObject(state,{
-        items:action.items,
+        status:action.status,
         error:null,
         loading:false
     });

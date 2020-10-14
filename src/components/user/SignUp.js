@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, TextField } from '@material-ui/core';
 import { connect } from 'react-redux';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 import * as actions from '../../store/actions/auth';
 
 const SignUp= (props) => {
@@ -11,36 +13,44 @@ const SignUp= (props) => {
     const [password1, setPassword1] = useState("");
     const [password2, setPassword2] = useState("");
     const [email, setEmail] = useState("");
+    const [open,setOpen]=useState(true)
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         props.onSignUp(userName, email, password1,password2);
-        
-        //At first the error is null, so have to set time out
-        await new  Promise(resolve => setTimeout(resolve, 2000));
-
         if (!props.error) {
             props.history.push('/');
         }
-
+        setOpen(true)
+        setUserName("")
+        setPassword1("")
+        setPassword2("")
+        setEmail("")
 
     }
 
     const classes = useStyles();
-    let errorMessage = null;
+    let message = null;
     if (props.error) {
-        errorMessage = (
-            <p>{props.error.message}</p>
+        message = (
+            <Snackbar open={open} autoHideDuration={1000} onClose={() => setOpen(!open)} >
+                <Alert severity="error">
+                    {props.error.message}
+                </Alert>
+            </Snackbar>
         );
     }
+
+
+
     return (
         <div>
          
             {
                 props.loading ? <p>loading </p> :
                     <form className={classes.root} noValidate autoComplete="off" onSubmit={handleSubmit}>
-                          {errorMessage}
+                          {message}
                         <TextField label="Username" value={userName} onChange={(e) => setUserName(e.target.value)} />
                         <TextField label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                         <TextField label="Password" type="Password" value={password1} onChange={(e) => setPassword1(e.target.value)} />
@@ -63,7 +73,9 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column'
     }
 }));
-
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
 const mapStateToProps = (state) => {
     return {
         loading: state.authReducer.loading,

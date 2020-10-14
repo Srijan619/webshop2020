@@ -25,18 +25,30 @@ export const editItemFail = error => {
     }
 }
 
-export const editItem= (id,price)=>{
-    return dispatch=>{
-            axios.put("http://127.0.0.1:8000/api/"+id+"/",{
+export const editItem= (item,price)=>{
+    return async dispatch=>{
+            const dataFromServer= await axios.get("http://127.0.0.1:8000/api/"+item.id+"/") //Getting original data to check the version against
+            .then(res=>{
+                return res.data
+            })
+            console.log(dataFromServer)
+            console.log(item.version)
+            if(dataFromServer.version===item.version)
+            {
+            await axios.put("http://127.0.0.1:8000/api/"+item.id+"/",{
                 price:price,
+                version:item.version+1
             })
             .then(res=>{
                 dispatch(editItemSuccess(res.data,res.status))
-                console.log(res.status)
             })
             .catch(err=>{
                 dispatch(editItemFail(err))
             })
+        }
+        else{
+            dispatch(editItemFail({"message":"The item's status might have been changed already"}))
+        }
       
     }
 

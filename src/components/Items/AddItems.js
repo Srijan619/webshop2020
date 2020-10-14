@@ -1,31 +1,20 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField'
-import Divider from '@material-ui/core/Divider';
 import { connect } from 'react-redux';
 import * as actionAdd from '../../store/actions/browse'
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import IconButton from '@material-ui/core/IconButton';
 import { useHistory } from "react-router-dom";
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
+import Snackbar from '@material-ui/core/Snackbar';
+import  MuiAlert  from '@material-ui/lab/Alert';
+import { CardContent } from '@material-ui/core';
 
 
 const useStyles = makeStyles({
-
-    button: {
-        position: 'relative'
-    },
     card: {
-        position: 'absolute',
-        marginTop: '1%',
         maxHeight: 300,
-        minWidth: 300,
+        maxWidth: 300,
     },
     content: {
         display: 'flex',
@@ -42,49 +31,57 @@ const AddItems = (props) => {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState(0);
+    const [openError,setOpenError]=useState(true)
 
     const handleSubmit = async (e) => {
         e.preventDefault();
      
          props.onAddItems(title,description,price,props.posted_by);
       
-        //At first the error is null, so have to set time out
-        await new  Promise(resolve => setTimeout(resolve, 1000));
        if(!props.error){
         history.push('/myitems')
        }
         setTitle("")
         setDescription("")
         setPrice("")
+        setOpenError(true)
         setOpen(false)
 
         
     } 
 
-    let errorMessage = null;
+
+    let message = null;
     if (props.error) {
-        errorMessage = (
-            <p>{props.error.message}</p>
+        message = (
+            <Snackbar open={openError} autoHideDuration={1000}  onClose={() => setOpenError(!openError)} >
+            <Alert  severity="error">
+              {props.error.message}
+            </Alert>
+          </Snackbar>
         );
     }
+  
     return (
-        <div>
+        <div >
            
-            <div className={classes.button} >
+            <div  >
                 <Button onClick={() => { setOpen(!open); }} color="primary" variant="outlined"
                   style={{marginTop:'4%',marginBottom:'1%'}}>Add Item </Button>
             </div>
             {open ?
                 <Card className={classes.card}>
+               
                   <form className={classes.content} noValidate autoComplete="off" onSubmit={handleSubmit} >
-                  {errorMessage}
-                        <TextField label="Title"  value={title} onChange={(e) => setTitle(e.target.value)} />
-                        <TextField label="Description" multiline  value={description} onChange={(e) => setDescription(e.target.value)}/>
-                        <TextField label="Price" type="number"  value={price} onChange={(e) => setPrice(e.target.value)} />
-                        <Button >Upload Image</Button>
+              
+                        <TextField label="Title" variant="filled" value={title} onChange={(e) => setTitle(e.target.value)} />
+                        <TextField label="Description" multiline variant="filled"  value={description} onChange={(e) => setDescription(e.target.value)}/>
+                        <TextField label="Price" type="number"  variant="filled" value={price} onChange={(e) => setPrice(e.target.value)} />
                         <Button  color="primary" variant="contained" type="submit">Add</Button>
                       
                     </form>
+                    {message}
+                   
                   </Card> :
                 <></>
             }
@@ -93,6 +90,9 @@ const AddItems = (props) => {
         </div >
     );
 };
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
 const mapStateToProps = (state) => {
     return {
         error: state.browseReducer.error,

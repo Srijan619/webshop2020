@@ -15,13 +15,13 @@ const ChangePassword = (props) => {
     const [open,setOpen]=useState(true)
 
 
-    const handleSubmit = async (e) => {
+    const handleSubmit =  (e) => {
         e.preventDefault();
-
         props.onChangePassword(oldPassword,newPassword1,newPassword2);
         setoldPassword("")
         setNewPassword1("")
         setNewPassword2("")
+        setOpen(true)
 
     }
  
@@ -46,7 +46,6 @@ const ChangePassword = (props) => {
     }
     return (
         <div>
-     
                     <form className={classes.root} noValidate autoComplete="off" onSubmit={handleSubmit}>
                     {message}
                         <TextField label="Old Password" type="Password" value={oldPassword} onChange={(e) => setoldPassword(e.target.value)} />

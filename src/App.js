@@ -23,18 +23,27 @@ function App(props) {
       <Router>
         <Nav />
         <Switch>
-          <Route path="/" exact  component={BrowseItems}/>
-          <Route path="/login" component={Login} /> 
-          <Route path="/signup" component={SignUp} />
-          <Route path="/cart" component={Cart}/>
+        <Route path="/" exact  component={BrowseItems}/>
+         {props.token? <><Route path="/cart" component={Cart}/>
           <Route path="/myitems" component={MyItems}/>
           <Route path="/change_password" component={ChangePassword}/>
+          </>:<> 
+          <Route path="/login" component={Login} /> 
+          <Route path="/signup" component={SignUp} /></>}
+       
         </Switch>
       </Router>
 {/* 
       <Login {...props}></Login> */}
     </div>
   );
+}
+const mapStateToProps = (state) => {
+  return {
+      token: state.authReducer.token,
+     
+
+  }
 }
 
 const mapDispatchToProps = dispatch => {
@@ -44,5 +53,5 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-export default connect(null,mapDispatchToProps)(App);
+export default connect(mapStateToProps,mapDispatchToProps)(App);
 
