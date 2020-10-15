@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, TextField } from '@material-ui/core';
 import { connect } from 'react-redux';
@@ -12,6 +12,7 @@ const Login = (props) => {
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
     const [open,setOpen]=useState(true)
+    const [disableButton,setDisableButton]=useState(true)
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -23,7 +24,16 @@ const Login = (props) => {
         setUserName("")
         setPassword("")
     }
-
+    useEffect(() => {
+        if(userName&&password){
+            setDisableButton(false)
+        }
+        else{
+            setDisableButton(true)
+        }
+       
+      });
+    
     const classes = useStyles();
     let message = null;
     if (props.error) {
@@ -44,7 +54,8 @@ const Login = (props) => {
                 {message}
                 <TextField label="Username" value={userName} onChange={(e) => setUserName(e.target.value)} />
                 <TextField label="Password" type="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                <Button type="submit">Login</Button>
+          
+                <Button type="submit" disabled={disableButton}>Login</Button>
             </form>
 
         </div>

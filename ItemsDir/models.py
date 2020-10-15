@@ -10,7 +10,7 @@ class Items(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     posted_by=models.CharField(max_length=45, default="")
     sold_to=models.CharField(max_length=45, default="",blank=True)
-    version=models.IntegerField(max_length=10,default=0)
+    version=models.IntegerField(default=0)
 
     def __str__(self):
         return self.title

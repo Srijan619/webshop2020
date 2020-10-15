@@ -57,11 +57,16 @@ export const getItems=()=>{
 export const addItems=(title,description,price,posted_by)=>{
     return async dispatch=>{
         dispatch(fetchStart)
-        await axios.post("http://127.0.0.1:8000/api/",{
+        let token=localStorage.getItem("token")
+        await axios.post("http://127.0.0.1:8000/api/add/",{
             title:title,
             description:description,
             price:price,
             posted_by:posted_by
+        },{
+            headers: {
+                Authorization: 'JWT ' + token
+              }
         })
         .then(res => {
             dispatch(fetchSuccess(res.data))

@@ -27,6 +27,7 @@ export const editItemFail = error => {
 
 export const editItem= (item,price)=>{
     return async dispatch=>{
+           let token=localStorage.getItem("token")
             const dataFromServer= await axios.get("http://127.0.0.1:8000/api/"+item.id+"/") //Getting original data to check the version against
             .then(res=>{
                 return res.data
@@ -35,9 +36,13 @@ export const editItem= (item,price)=>{
             console.log(item.version)
             if(dataFromServer.version===item.version)
             {
-            await axios.put("http://127.0.0.1:8000/api/"+item.id+"/",{
+            await axios.put("http://127.0.0.1:8000/api/update/"+item.id+"/",{
                 price:price,
                 version:item.version+1
+            },{
+                headers: {
+                    Authorization: 'JWT ' + token
+                  }
             })
             .then(res=>{
                 dispatch(editItemSuccess(res.data,res.status))

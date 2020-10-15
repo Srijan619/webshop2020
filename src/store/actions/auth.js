@@ -60,7 +60,7 @@ export const authLogin =  (username, password)=>{
             dispatch(checkAuthTimeout(3600));
         })
         .catch(err =>{
-            dispatch(authFail(err))
+            dispatch(authFail({"message":"Please check your username and password"}))
         })
     }
 }
@@ -84,7 +84,7 @@ export const authSignup = (username, email, password1,password2)=>{
             dispatch(checkAuthTimeout(3600));
         })
         .catch(err =>{
-            dispatch(authFail(err))
+            dispatch(authFail({"message":"Please check all the details"}))
         })
     }
 }

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as actionTypes from './actionTypes';
-import * as cartAction from '../actions/cartAction'
+
 
 export const changePasswordStart = () => {
     return {

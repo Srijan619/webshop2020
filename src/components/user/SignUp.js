@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, TextField } from '@material-ui/core';
 import { connect } from 'react-redux';
@@ -14,6 +14,8 @@ const SignUp= (props) => {
     const [password2, setPassword2] = useState("");
     const [email, setEmail] = useState("");
     const [open,setOpen]=useState(true)
+    const [disableButton,setDisableButton]=useState(true)
+    let errorMessage=null;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -29,9 +31,19 @@ const SignUp= (props) => {
         setEmail("")
 
     }
-
+    useEffect(() => {
+        if(userName&&password1&&password2&&email){
+            setDisableButton(false)
+        }
+        else{
+           
+            setDisableButton(true)
+        }
+       
+      });
     const classes = useStyles();
     let message = null;
+   
     if (props.error) {
         message = (
             <Snackbar open={open} autoHideDuration={1000} onClose={() => setOpen(!open)} >
@@ -55,7 +67,7 @@ const SignUp= (props) => {
                         <TextField label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                         <TextField label="Password" type="Password" value={password1} onChange={(e) => setPassword1(e.target.value)} />
                         <TextField label="Password Confirm" type="Password" value={password2} onChange={(e) => setPassword2(e.target.value)} />
-                        <Button type="submit">SignUp</Button>
+                        <Button type="submit" disabled={disableButton}>SignUp</Button>
                     </form>
 
             }

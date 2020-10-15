@@ -10,9 +10,8 @@ from django.views import View
 from django.views.generic import TemplateView
 from django.views.decorators.cache import never_cache
 from rest_framework import generics
-from rest_framework.decorators import permission_classes
-from rest_framework.decorators import authentication_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import permission_classes,authentication_classes,api_view
+from rest_framework.permissions import IsAuthenticated,IsAdminUser,AllowAny
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework import filters
 from faker import Faker
@@ -23,15 +22,17 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 index = never_cache(TemplateView.as_view(template_name='index.html')) # Takes index from the react side
 
+
 class ItemListView(APIView):
-    
     def get(self,request):  
         queryset=Items.objects.all()
         serializer_class=ItemSerializer(queryset, many=True)
         return Response(serializer_class.data)
+  
+@authentication_classes([JSONWebTokenAuthentication,]) 
+@permission_classes([IsAuthenticated,])    
+class ItemAddView(APIView):
 
-    @permission_classes((IsAuthenticated,))  
-    @authentication_classes((JSONWebTokenAuthentication,))  
     def post(self,request):
         serializer= ItemSerializer(data=request.data)
         if serializer.is_valid():
@@ -39,24 +40,25 @@ class ItemListView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class ItemDetailView(APIView):
-
-    def get(self,request,id):  
-        queryset=Items.objects.get(id=id)
-        serializer_class=ItemSerializer(queryset)
-        return Response(serializer_class.data)
-
-    @permission_classes((IsAuthenticated,))    
-    @authentication_classes((JSONWebTokenAuthentication,)) 
+@authentication_classes([JSONWebTokenAuthentication,]) 
+@permission_classes([IsAuthenticated,])   
+class ItemUpdateView(APIView):
     def put(self,request,id):
         queryset=Items.objects.get(id=id)
-        request.session['version']=queryset.version
         serializer= ItemSerializer(queryset,data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class ItemDetailView(APIView):  
+    def get(self,request,id):  
+        queryset=Items.objects.get(id=id)
+        serializer_class=ItemSerializer(queryset)
+        return Response(serializer_class.data)
+
+ 
 #Used to filter the Items
 class ItemSearchView(generics.ListAPIView):
     search_fields = ['title','description']
@@ -64,11 +66,13 @@ class ItemSearchView(generics.ListAPIView):
     queryset=Items.objects.all()
     serializer_class=ItemSerializer
 
-#Generate Random DB data
+
+
+#Generate Random DB data 
+@authentication_classes((JSONWebTokenAuthentication,))  
+@permission_classes([IsAdminUser,]) 
 class generateData(APIView):
 
-    @permission_classes((IsAuthenticated,)) 
-    @authentication_classes((JSONWebTokenAuthentication,))  
     def get(self,request):
         fake = Faker()
         fake.unique_mode = True

@@ -27,16 +27,21 @@ export const checkOutFail = error => {
 
 export const checkoutItem= (items,sold_to)=>{
     return dispatch=>{
+        let token=localStorage.getItem("token")
         items.map(async item=>{
             const dataFromServer=await axios.get("http://127.0.0.1:8000/api/"+item.id+"/") //Getting original data to check the version against
             .then(res=>{
                 return res.data
             })
             if(dataFromServer.version===item.version){
-                await axios.put("http://127.0.0.1:8000/api/"+item.id+"/",{
+                await axios.put("http://127.0.0.1:8000/api/update/"+item.id+"/",{
                     sold_status:true,
                     sold_to:sold_to,
                     version:item.version+1
+                },{
+                    headers: {
+                        Authorization: 'JWT ' + token
+                      }
                 })
                 .then(res=>{
                     dispatch(checkOutSuccess(res.status))

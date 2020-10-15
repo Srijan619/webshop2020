@@ -29,10 +29,9 @@ ALLOWED_HOSTS = ['127.0.0.1','test-django-react-app1.herokuapp.com']
 
 
 REST_FRAMEWORK = {
- 
+  
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-       
     ),
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
