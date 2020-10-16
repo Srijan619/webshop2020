@@ -19,7 +19,7 @@ function App(props) {
 
 
   return (
-    <div>
+    <>
       <Router>
         <Nav />
         <Switch>
@@ -33,9 +33,8 @@ function App(props) {
        
         </Switch>
       </Router>
-{/* 
-      <Login {...props}></Login> */}
-    </div>
+
+    </>
   );
 }
 const mapStateToProps = (state) => {

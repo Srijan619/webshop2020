@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -15,15 +15,16 @@ const useStyles = makeStyles({
         marginBottom: '2%',
         maxWidth: 400,
         minWidth: 400,
-        width: 'fit-content'
+        width: 'fit-content',
+      
     },
-
     container: {
         marginTop: '5%',
         marginLeft:'1%',
         display: 'flex',
         flexFlow: 'row wrap',
-
+        overflowY:'scroll',
+        height:"80vh"
     },
     price: {
         fontSize: 14,
@@ -46,11 +47,28 @@ const BrowseItems = (props) => {
 
     useEffect( () => {
         props.onGetItems(); //Filters On Sale Items
-        console.log(data)
+        console.log("Hello")
+
     // eslint-disable-next-line
 
-    }, []);
+    },[]);
+    
+    // window.onscroll=()=>{
+    //     if(props.error||props.loading||!props.hasMore) return;
+    //     if(document.documentElement.scrollHeight-document.documentElement.scrollTop===document.documentElement.clientHeight)
+    //     {
+            
+    //         console.log("HelloScroll")
+    //     }
+    //     console.log("Hello")
+    // }
 
+    const handleScroll = (e) => {
+        const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+        if (bottom) { 
+            console.log("bottom")
+        }
+     }
     const classes = useStyles();
 
 
@@ -80,14 +98,13 @@ const BrowseItems = (props) => {
         );
     }
     return (
-        <div className={classes.container}>
+        <>
             {errorMessage}
-           
-          <>
+      
             {props.loading ? <div>Loading..</div>
                 :
 
-                <>
+                <div className={classes.container} onScroll={handleScroll}>
                     {data.map(item =>
                         {
                             if (!item.sold_status&&item.posted_by!==props.username)
@@ -117,11 +134,11 @@ const BrowseItems = (props) => {
                                 )}
                         )}
 
-                </>
+                </div>
             }
-              </>
+          
      
-        </div>
+        </>
 
     );
 };
@@ -133,13 +150,17 @@ const mapStateToProps = (state) => {
         loading: state.browseReducer.loading,
         error: state.browseReducer.error,
         itemsCart:state.cartReducer.items,
-        username:state.authReducer.username
+        username:state.authReducer.username,
+        offset:state.browseReducer.offset,
+        limit:state.browseReducer.limit,
+        itemsLimited:state.browseReducer.itemLimited
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
         onGetItems: () => dispatch(actions.getItems()),
-        onAddToBasket: (item) => dispatch(actionAdd.addToBasket(item))
+        onAddToBasket: (item) => dispatch(actionAdd.addToBasket(item)),
+        onLoadLimitItems:(offset,limit)=>dispatch(actions.getLimitedItems(offset,limit))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(BrowseItems);

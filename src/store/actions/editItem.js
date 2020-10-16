@@ -27,6 +27,7 @@ export const editItemFail = error => {
 
 export const editItem= (item,price)=>{
     return async dispatch=>{
+        dispatch(editItemStart)
            let token=localStorage.getItem("token")
             const dataFromServer= await axios.get("http://127.0.0.1:8000/api/"+item.id+"/") //Getting original data to check the version against
             .then(res=>{

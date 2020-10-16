@@ -8,7 +8,7 @@ import * as actionAdd from '../../store/actions/browse'
 import { useHistory } from "react-router-dom";
 import Snackbar from '@material-ui/core/Snackbar';
 import  MuiAlert  from '@material-ui/lab/Alert';
-import { CardContent } from '@material-ui/core';
+
 
 
 const useStyles = makeStyles({

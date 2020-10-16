@@ -24,6 +24,13 @@ export const fetchFail = error => {
     }
 }
 
+export const fetchLimitedDataSuccess=(items,offset,limit)=>{
+    return {
+        type:actionTypes.FETCH_LIMIT_SUCCESS,
+        itemLimited:items,
+        offset:offset+limit
+    }
+}
 //Search items need to be done in the server side
 export const searchItems = (keyword)=>{
     return async dispatch=>{
@@ -79,3 +86,15 @@ export const addItems=(title,description,price,posted_by)=>{
 
 }
 
+export const getLimitedItems  = (offset,limit)=>{
+    return async dispatch=>{
+        dispatch(fetchStart)
+        try {
+            const res = await axios.get(`http://127.0.0.1:8000/api/?limit=${limit}&offset=${offset}`);
+            const items = res.data;
+            dispatch(fetchLimitedDataSuccess(items,offset,limit));
+        } catch (err) {
+            dispatch(fetchFail(err));
+        }
+    }
+}

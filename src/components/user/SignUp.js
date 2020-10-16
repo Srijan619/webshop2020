@@ -15,14 +15,20 @@ const SignUp= (props) => {
     const [email, setEmail] = useState("");
     const [open,setOpen]=useState(true)
     const [disableButton,setDisableButton]=useState(true)
-    let errorMessage=null;
+   
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        props.onSignUp(userName, email, password1,password2);
         if (!props.error) {
             props.history.push('/');
+        }
+        if(password1!==password2){
+            props.onDispatchError({"message":"Password doesn't match"})
+
+        }
+        else{
+            props.onSignUp(userName, email, password1,password2);
         }
         setOpen(true)
         setUserName("")
@@ -34,12 +40,13 @@ const SignUp= (props) => {
     useEffect(() => {
         if(userName&&password1&&password2&&email){
             setDisableButton(false)
+          
         }
         else{
-           
             setDisableButton(true)
         }
-       
+   
+         // eslint-disable-next-line
       });
     const classes = useStyles();
     let message = null;
@@ -97,7 +104,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onSignUp: (username,email, password1,password2) => dispatch(actions.authSignup(username,email,password1, password2))
+        onSignUp: (username,email, password1,password2) => dispatch(actions.authSignup(username,email,password1, password2)),
+        onDispatchError:(err)=>dispatch(actions.authFail(err))
     }
 }
 

@@ -17,10 +17,6 @@ from django.contrib import admin
 from django.urls import path,include
 from rest_framework_jwt.views import obtain_jwt_token
 
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
 
 urlpatterns = [
     path('', include('ItemsDir.urls')),

@@ -19,14 +19,19 @@ const Nav = (props) => {
     const classes = useStyles();
     const history = useHistory();
     
-    const data=Array.from(props.items);
+    
 
     const handleOnInputChange = (event) => {
         const query = event.target.value;
         props.onSearchItem(query)   
     };
     const generateRandomData=async ()=>{
-       return await axios.get("http://127.0.0.1:8000/random/")
+        const token=localStorage.getItem('token')
+       return await axios.get("http://127.0.0.1:8000/random/",{
+        headers: {
+            Authorization: 'JWT ' + token
+          }
+    })
        
     }
     return (
