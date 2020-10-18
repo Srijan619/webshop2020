@@ -15,6 +15,8 @@ const useStyles = makeStyles({
         marginBottom: '2%',
         maxWidth: 400,
         minWidth: 400,
+        maxHeight:200,
+        height:'fit-content',
         width: 'fit-content',
       
     },
@@ -23,8 +25,7 @@ const useStyles = makeStyles({
         marginLeft:'1%',
         display: 'flex',
         flexFlow: 'row wrap',
-        overflowY:'scroll',
-        height:"80vh"
+      
     },
     price: {
         fontSize: 14,

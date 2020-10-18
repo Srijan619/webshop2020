@@ -46,20 +46,34 @@ export const searchItems = (keyword)=>{
 
 }
 
+// export const getItems=()=>{
+//     return async dispatch=>{
+//         dispatch(fetchStart)
+//         try {
+//             const res = await axios.get("http://127.0.0.1:8000/api/");
+//             const items = res.data;
+//             dispatch(fetchSuccess(items));
+//         } catch (err) {
+//             dispatch(fetchFail(err));
+//         }
+//     }
+
+// }
+
 export const getItems=()=>{
     return async dispatch=>{
         dispatch(fetchStart)
         try {
-            const res = await axios.get("http://127.0.0.1:8000/api/");
-            const items = res.data;
+            const res = await axios.get("http://127.0.0.1:8000/api/?page=1");
+            const items = res.data.results;
             dispatch(fetchSuccess(items));
+            console.log(res)
         } catch (err) {
             dispatch(fetchFail(err));
         }
     }
 
 }
-
 
 export const addItems=(title,description,price,posted_by)=>{
     return async dispatch=>{

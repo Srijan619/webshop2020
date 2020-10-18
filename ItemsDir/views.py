@@ -18,17 +18,29 @@ from faker import Faker
 import random
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from rest_framework.pagination import (LimitOffsetPagination,PageNumberPagination)
 
 # Create your views here.
 index = never_cache(TemplateView.as_view(template_name='index.html')) # Takes index from the react side
 
 
-class ItemListView(APIView):
-    def get(self,request):  
+# class ItemListView(APIView):
+   
+#     def get(self,request):  
+#         queryset=Items.objects.all()
+#         serializer_class=ItemSerializer(queryset, many=True)
+#         return Response(serializer_class.data)
+
+class ItemListView(generics.ListAPIView):
+    serializer_class= ItemSerializer
+    pagination_class =PageNumberPagination
+ 
+
+    def get_queryset(self):  
         queryset=Items.objects.all()
-        serializer_class=ItemSerializer(queryset, many=True)
-        return Response(serializer_class.data)
-  
+        return queryset  
+
+        
 @authentication_classes([JSONWebTokenAuthentication,]) 
 @permission_classes([IsAuthenticated,])    
 class ItemAddView(APIView):
