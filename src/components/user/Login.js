@@ -11,42 +11,43 @@ const Login = (props) => {
 
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
-    const [open,setOpen]=useState(true)
-    const [disableButton,setDisableButton]=useState(true)
+    const [open, setOpen] = useState(true)
+    const [disableButton, setDisableButton] = useState(true)
+ 
 
-    const handleSubmit = (e) => {
+    let message = null;
+
+    const handleSubmit = async(e) => {
         e.preventDefault();
-        props.onAuth(userName, password);
-        if (!props.error) {
-            props.history.push('/');
-        }
+        props.onAuth(userName, password,props.history);
+  
         setOpen(true)
         setUserName("")
         setPassword("")
     }
     useEffect(() => {
-        if(userName&&password){
+        document.title = "Login"
+        if (userName && password) {
             setDisableButton(false)
         }
-        else{
+        else {
             setDisableButton(true)
         }
-       
-      });
-    
-    const classes = useStyles();
-    let message = null;
+
+    });
     if (props.error) {
-        message = (
-            <Snackbar open={open} autoHideDuration={1000} onClose={() => setOpen(!open)} >
-                <Alert severity="error">
-                    {props.error.message}
+
+            message = (
+                <Snackbar open={open} autoHideDuration={1000} onClose={() => setOpen(!open)} >
+                    <Alert severity="error">
+                        Please check your username and password
                 </Alert>
-            </Snackbar>
-        );
-    }
+                </Snackbar>
+            );
+        }
 
-
+  
+    const classes = useStyles();
 
     return (
         <div>
@@ -54,8 +55,9 @@ const Login = (props) => {
                 {message}
                 <TextField label="Username" value={userName} onChange={(e) => setUserName(e.target.value)} />
                 <TextField label="Password" type="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-          
+
                 <Button type="submit" disabled={disableButton}>Login</Button>
+
             </form>
 
         </div>
@@ -65,7 +67,7 @@ const Login = (props) => {
 };
 const useStyles = makeStyles((theme) => ({
     root: {
-        marginTop: '5%',
+        marginTop: window.innerHeight / 10,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -77,13 +79,14 @@ function Alert(props) {
 }
 const mapStateToProps = (state) => {
     return {
-        error: state.authReducer.error
+        error: state.authReducer.error,
+    
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuth: (username, password) => dispatch(actions.authLogin(username, password))
+        onAuth: (username, password,history) => dispatch(actions.authLogin(username, password,history))
     }
 }
 

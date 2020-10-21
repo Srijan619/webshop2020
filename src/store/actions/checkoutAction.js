@@ -27,7 +27,7 @@ export const checkOutFail = error => {
 
 export const checkoutItem= (items,sold_to)=>{
     return dispatch=>{
-        dispatch(checkOutStart)
+        dispatch(checkOutStart())
         let token=localStorage.getItem("token")
         items.map(async item=>{
             const dataFromServer=await axios.get("http://127.0.0.1:8000/api/"+item.id+"/") //Getting original data to check the version against

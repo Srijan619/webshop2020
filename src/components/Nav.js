@@ -19,28 +19,18 @@ const Nav = (props) => {
     const classes = useStyles();
     const history = useHistory();
     
-    
-
     const handleOnInputChange = (event) => {
         const query = event.target.value;
         props.onSearchItem(query)   
     };
-    const generateRandomData=async ()=>{
-        const token=localStorage.getItem('token')
-       return await axios.get("http://127.0.0.1:8000/random/",{
-        headers: {
-            Authorization: 'JWT ' + token
-          }
-    })
-       
-    }
+
+ 
     return (
         <div>
             <AppBar>
                 <Toolbar>
                  
-                    <Button variant="outlined" color="inherit" onClick={() => { history.push('/') }} className={classes.title}>Home</Button>
-
+                    <Button variant="outlined" color="inherit" onClick={() => { history.push('/main/') }} className={classes.title}>Home</Button>
                     <div className={classes.search}>
                         <div className={classes.searchIcon}>
                             <SearchIcon />
@@ -60,19 +50,19 @@ const Nav = (props) => {
                             props.token ?
                                 <div className={classes.cartButton}>
                                 <p >{props.username}</p>
-                                {props.username==="admin"?<Button  onClick={()=>{generateRandomData();window.location.reload(false);}} color="inherit">Generate Random Data</Button>:<></>}
+      
                                 
-                                <Button  onClick={() => { history.push('/change_password'); }} color="inherit">Change Password</Button>
-                                <Button  onClick={() => { history.push('/myitems') }} color="inherit">My Items</Button>                             
-                                <Button  onClick={() => { props.onSignOut();history.push('/') ;props.onClearBasket();}} color="inherit">Logout</Button>
+                                <Button  onClick={() => { history.push('/main/change_password'); }} color="inherit">Change Password</Button>
+                                <Button  onClick={() => { history.push('/main/myitems') }} color="inherit">My Items</Button>                             
+                                <Button  onClick={() => { props.onSignOut();history.push('/main/') ;props.onClearBasket();}} color="inherit">Logout</Button>
                                 <Cart></Cart>
                               
                                 </div>
                                 :
                                 <>
 
-                                    <Button  onClick={() => { history.push('/login') }} color="inherit">Login</Button>
-                                    <Button   onClick={() => { history.push('/signup') }} color="inherit">Sign Up</Button>
+                                    <Button  onClick={() => { history.push('/main/login') }} color="inherit">Login</Button>
+                                    <Button   onClick={() => { history.push('/main/signup') }} color="inherit">Sign Up</Button>
                                 </> 
                         }
 
@@ -101,6 +91,7 @@ const mapDispatchToProps = dispatch => {
 }
 
 const useStyles = makeStyles((theme) => ({
+  
     title: {
         justifyContent: 'flex-start',
         width: 'fit-content'

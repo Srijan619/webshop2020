@@ -9,10 +9,9 @@ export const editItemStart = () => {
 }
 
 
-export const editItemSuccess = (item,status) => {
+export const editItemSuccess = (status) => {
     return {
         type:actionTypes.EDITITEM_SUCCESS,
-        item:item,
         status:status
     }
 }
@@ -27,7 +26,7 @@ export const editItemFail = error => {
 
 export const editItem= (item,price)=>{
     return async dispatch=>{
-        dispatch(editItemStart)
+        dispatch(editItemStart())
            let token=localStorage.getItem("token")
             const dataFromServer= await axios.get("http://127.0.0.1:8000/api/"+item.id+"/") //Getting original data to check the version against
             .then(res=>{
@@ -46,7 +45,8 @@ export const editItem= (item,price)=>{
                   }
             })
             .then(res=>{
-                dispatch(editItemSuccess(res.data,res.status))
+                dispatch(editItemSuccess(res.status));
+         
             })
             .catch(err=>{
                 dispatch(editItemFail(err))

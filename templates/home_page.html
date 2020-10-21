@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Web Shop</title>
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Our page has {{item_count}} items, {{user_count}}  active users</h1>
+    </div>
+    <div class="container">
+        <h1>N.B: By going to the store you accept our terms and conditions</h1>
+        <a href="#" onclick="window.location.href='/main/'">Go to the shop</a>
+        <p></p>
+        <a href="#" onclick="window.location.href='/random/'">Delete all items and generate 6 new users and 30 new items</a>
+    </div>
+</body>
+
+</html>
+
+<style>
+    .container {
+        margin: auto;
+        width: 50%;
+        border: 3px solid green;
+        padding: 10px;
+        text-align: center;
+    }
+    .login-container{
+       float:right
+    }
+</style>

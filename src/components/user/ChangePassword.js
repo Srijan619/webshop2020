@@ -1,4 +1,4 @@
-import React, {  useState } from 'react';
+import React, {  useState ,useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, TextField } from '@material-ui/core';
 import { connect } from 'react-redux';
@@ -12,12 +12,32 @@ const ChangePassword = (props) => {
     const [oldPassword, setoldPassword] = useState("");
     const [newPassword1, setNewPassword1] = useState("");
     const [newPassword2, setNewPassword2] = useState("");
+    const [disableButton,setDisableButton]=useState(true)
     const [open,setOpen]=useState(true)
 
 
-    const handleSubmit =  (e) => {
+    useEffect(() => {
+        document.title="Change Password"
+        if(oldPassword&&newPassword1&&newPassword2){
+            setDisableButton(false)
+          
+        }
+        else{
+            setDisableButton(true)
+        }
+         // eslint-disable-next-line
+      });
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        props.onChangePassword(oldPassword,newPassword1,newPassword2);
+        
+        if(newPassword1!==newPassword2){
+            props.onDispatchError({"message":"Password doesn't match"})
+
+        }
+        else{
+         props.onChangePassword(oldPassword,newPassword1,newPassword2,props.history);
+       
+    }
         setoldPassword("")
         setNewPassword1("")
         setNewPassword2("")
@@ -27,7 +47,7 @@ const ChangePassword = (props) => {
  
     const classes = useStyles();
     let message = null;
-    if (props.error) {
+    if(props.error){
         message = (
             <Snackbar open={open} autoHideDuration={1000}  onClose={() => setOpen(!open)} >
             <Alert  severity="error">
@@ -51,7 +71,7 @@ const ChangePassword = (props) => {
                         <TextField label="Old Password" type="Password" value={oldPassword} onChange={(e) => setoldPassword(e.target.value)} />
                         <TextField label="New Password" type="Password" value={newPassword1} onChange={(e) => setNewPassword1(e.target.value)} />
                         <TextField label="New Password Again" type="Password" value={newPassword2} onChange={(e) => setNewPassword2(e.target.value)} />
-                        <Button type="submit">Change Password</Button>
+                        <Button type="submit"  disabled={disableButton}>Change Password</Button>
                     </form>
 
         </div>
@@ -61,7 +81,7 @@ const ChangePassword = (props) => {
 };
 const useStyles = makeStyles((theme) => ({
     root: {
-       marginTop: '5%',
+        marginTop: window.innerHeight/10,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -80,7 +100,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onChangePassword: (oldPass, newPass1,newPass2) => dispatch(actionChangePassword.authChangePassword(oldPass,newPass1,newPass2))
+        onChangePassword: (oldPass, newPass1,newPass2,history) => dispatch(actionChangePassword.authChangePassword(oldPass,newPass1,newPass2,history)),
+        onDispatchError:(err)=>dispatch(actionChangePassword.changePasswordFail(err))
     }
 }
 

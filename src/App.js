@@ -23,13 +23,13 @@ function App(props) {
       <Router>
         <Nav />
         <Switch>
-        <Route path="/" exact  component={BrowseItems}/>
-         {props.token? <><Route path="/cart" component={Cart}/>
-          <Route path="/myitems" component={MyItems}/>
-          <Route path="/change_password" component={ChangePassword}/>
+        <Route path="/main/" exact  component={BrowseItems}/>
+         {props.token? <><Route path="/main/cart" component={Cart}/>
+          <Route path="/main/myitems" component={MyItems}/>
+          <Route path="/main/change_password" component={ChangePassword}/>
           </>:<> 
-          <Route path="/login" component={Login} /> 
-          <Route path="/signup" component={SignUp} /></>}
+          <Route path="/main/login" component={Login} /> 
+          <Route path="/main/signup" component={SignUp} /></>}
        
         </Switch>
       </Router>

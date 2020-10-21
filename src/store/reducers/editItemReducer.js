@@ -2,7 +2,6 @@ import * as actionTypes from '../actions/actionTypes';
 import {updateObject} from '../utility';
 
 const initialState={
-    items:[],
     error:null,
     loading:false,
     status:null       
@@ -17,7 +16,6 @@ const editItemStart=(state,action)=>{
 
 const editItemSuccess=(state,action)=>{
     return updateObject(state,{
-        items:action.items,
         error:null,
         loading:false,
         status:action.status

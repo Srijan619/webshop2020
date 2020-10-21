@@ -26,7 +26,7 @@ export const changePasswordFail = error => {
     }
 }
 
-export const authChangePassword =  (oldPassword, newPassword1,newPassword2)=>{
+export const authChangePassword =  (oldPassword, newPassword1,newPassword2,history)=>{
     return (dispatch)=> {
         dispatch(changePasswordStart());
         let token=localStorage.getItem("token")
@@ -41,9 +41,11 @@ export const authChangePassword =  (oldPassword, newPassword1,newPassword2)=>{
         })
         .then(res => {
             dispatch(changePasswordSuccess(res.status));
+            history.push("/main/")
         })
         .catch(err =>{
             dispatch(changePasswordFail(err))
+            history.push("/main/change_password")
         })
     }
 }

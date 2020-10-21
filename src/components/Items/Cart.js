@@ -62,17 +62,17 @@ const Cart = (props) => {
         props.onRemoveItem(item)
     }
 
-    const checkoutItem=(e)=>{
+    const checkoutItem=  async(e)=>{
         e.preventDefault();
-        props.onCheckOutItem(data,props.sold_to);
-        props.onGetItems();
-        props.onClearBasket();
+        await props.onCheckOutItem(data,props.sold_to);
         setOpenMessage(true)
+        props.onGetItems(1)
+        props.onClearBasket()
     }
     let message = null;
     if (props.error) {
         message = (
-            <Snackbar open={openMessage} autoHideDuration={1000}  onClose={() => {setOpenMessage(!openMessage);setOpen(false)}} >
+            <Snackbar open={openMessage} autoHideDuration={1000}  onClose={() => {setOpenMessage(!openMessage);setOpen(true)}} >
             <Alert  severity="error">
               {props.error.message}
             </Alert>
@@ -153,7 +153,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
     return {
         onRemoveItem:(item)=>dispatch(actionCart.removeCartItem(item)),
-        onGetItems:()=>dispatch(actionBrowse.getItems()),
+        onGetItems:()=>dispatch(actionBrowse.getItemsOnSale(1)),
         onClearBasket:()=>dispatch(actionCart.clearBasket()),
         onCheckOutItem:(item,sold_to)=>dispatch(actionCheckOut.checkoutItem(item,sold_to))
     }

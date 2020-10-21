@@ -24,19 +24,40 @@ export const fetchFail = error => {
     }
 }
 
-export const fetchLimitedDataSuccess=(items,offset,limit)=>{
+export const fetchLimitedDataSuccess=(items,next)=>{
     return {
         type:actionTypes.FETCH_LIMIT_SUCCESS,
         itemLimited:items,
-        offset:offset+limit
+        next:next
+    }
+}
+export const searchItem=(items)=>{
+    return {
+        type:actionTypes.SEARCHITEMS,
+        itemLimited:items,
+      
     }
 }
 //Search items need to be done in the server side
 export const searchItems = (keyword)=>{
     return async dispatch=>{
-        dispatch(fetchStart)
+        dispatch(fetchStart())
         try {
             const res = await axios.get("http://127.0.0.1:8000/api/search/?search="+keyword);
+            const items = res.data.results;
+            dispatch(searchItem(items));
+        } catch (err) {
+            dispatch(fetchFail(err));
+        }
+    }
+
+}
+
+export const getItems=()=>{
+    return async dispatch=>{
+        dispatch(fetchStart())
+        try {
+            const res = await axios.get("http://127.0.0.1:8000/api/");
             const items = res.data;
             dispatch(fetchSuccess(items));
         } catch (err) {
@@ -46,28 +67,15 @@ export const searchItems = (keyword)=>{
 
 }
 
-// export const getItems=()=>{
-//     return async dispatch=>{
-//         dispatch(fetchStart)
-//         try {
-//             const res = await axios.get("http://127.0.0.1:8000/api/");
-//             const items = res.data;
-//             dispatch(fetchSuccess(items));
-//         } catch (err) {
-//             dispatch(fetchFail(err));
-//         }
-//     }
-
-// }
-
-export const getItems=()=>{
+export const getItemsOnSale=(page)=>{
     return async dispatch=>{
-        dispatch(fetchStart)
+        dispatch(fetchStart())
         try {
-            const res = await axios.get("http://127.0.0.1:8000/api/?page=1");
+            const res = await axios.get(`http://127.0.0.1:8000/api/onsale/?page=${page}`);
             const items = res.data.results;
-            dispatch(fetchSuccess(items));
-            console.log(res)
+            const next=res.data.next
+            dispatch(fetchLimitedDataSuccess(items,next));
+         
         } catch (err) {
             dispatch(fetchFail(err));
         }
@@ -100,15 +108,3 @@ export const addItems=(title,description,price,posted_by)=>{
 
 }
 
-export const getLimitedItems  = (offset,limit)=>{
-    return async dispatch=>{
-        dispatch(fetchStart)
-        try {
-            const res = await axios.get(`http://127.0.0.1:8000/api/?limit=${limit}&offset=${offset}`);
-            const items = res.data;
-            dispatch(fetchLimitedDataSuccess(items,offset,limit));
-        } catch (err) {
-            dispatch(fetchFail(err));
-        }
-    }
-}

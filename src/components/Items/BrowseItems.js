@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -8,7 +8,8 @@ import Divider from '@material-ui/core/Divider';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/browse'
 import * as actionAdd from '../../store/actions/cartAction'
-
+import MoreIcon from '@material-ui/icons/More';
+import { IconButton } from '@material-ui/core';
 const useStyles = makeStyles({
     root: {
         marginRight: '1%',
@@ -21,7 +22,7 @@ const useStyles = makeStyles({
       
     },
     container: {
-        marginTop: '5%',
+        marginTop: window.innerHeight/10,
         marginLeft:'1%',
         display: 'flex',
         flexFlow: 'row wrap',
@@ -45,31 +46,23 @@ const useStyles = makeStyles({
     }
 });
 const BrowseItems = (props) => {
-
+    const[page,setPage]=useState(1)
     useEffect( () => {
-        props.onGetItems(); //Filters On Sale Items
-        console.log("Hello")
-
+     document.title="Browse the Shop"
+     props.onGetItemsOnSale(page); //Filters On Sale Items
     // eslint-disable-next-line
 
     },[]);
     
-    // window.onscroll=()=>{
-    //     if(props.error||props.loading||!props.hasMore) return;
-    //     if(document.documentElement.scrollHeight-document.documentElement.scrollTop===document.documentElement.clientHeight)
-    //     {
-            
-    //         console.log("HelloScroll")
-    //     }
-    //     console.log("Hello")
-    // }
-
-    const handleScroll = (e) => {
-        const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
-        if (bottom) { 
-            console.log("bottom")
-        }
-     }
+ 
+    const handleLoadMore=()=>{
+     
+     let getPage=page+1
+     setPage(getPage)
+     if(!props.nextItem) return;
+     props.onGetItemsOnSale(getPage)
+  
+    }
     const classes = useStyles();
 
 
@@ -90,8 +83,8 @@ const BrowseItems = (props) => {
       }
     }
   
-    const data= Array.from(props.items)
-
+    const data= Array.from(props.itemsLimited)
+ 
     let errorMessage = null;
     if (props.error) {
         errorMessage = (
@@ -102,14 +95,16 @@ const BrowseItems = (props) => {
         <>
             {errorMessage}
       
-            {props.loading ? <div>Loading..</div>
+            {props.loading ? <div>Loading......</div>
                 :
-
-                <div className={classes.container} onScroll={handleScroll}>
+<>
+                <div className={classes.container}>
                     {data.map(item =>
                         {
-                            if (!item.sold_status&&item.posted_by!==props.username)
+                          
+                            if (item.posted_by!==props.username)
                                 return (
+                                    
                             <Card className={classes.root} key={item.id}>
                                 <CardContent>
                                     <Typography className={classes.pos} color="textSecondary" component="span">
@@ -132,10 +127,13 @@ const BrowseItems = (props) => {
 
                                 </CardContent>
                             </Card>
-                                )}
+                                )
+                         }
                         )}
 
                 </div>
+                {!props.nextItem?<Typography>No more items to load.....</Typography>:<IconButton onClick={handleLoadMore}> <MoreIcon></MoreIcon> Load More</IconButton>}
+                </>
             }
           
      
@@ -147,21 +145,19 @@ const BrowseItems = (props) => {
 const mapStateToProps = (state) => {
     return {
         isAuthenticated: state.authReducer.token !== null,
-        items: state.browseReducer.items,
         loading: state.browseReducer.loading,
         error: state.browseReducer.error,
         itemsCart:state.cartReducer.items,
         username:state.authReducer.username,
-        offset:state.browseReducer.offset,
-        limit:state.browseReducer.limit,
-        itemsLimited:state.browseReducer.itemLimited
+        itemsLimited:state.browseReducer.itemLimited,
+        nextItem:state.browseReducer.next
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
-        onGetItems: () => dispatch(actions.getItems()),
+        onGetItemsOnSale: (page) => dispatch(actions.getItemsOnSale(page)),
         onAddToBasket: (item) => dispatch(actionAdd.addToBasket(item)),
-        onLoadLimitItems:(offset,limit)=>dispatch(actions.getLimitedItems(offset,limit))
+    
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(BrowseItems);

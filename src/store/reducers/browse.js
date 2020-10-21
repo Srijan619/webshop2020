@@ -5,10 +5,8 @@ const initialState={
     items:[],
     error:null,
     loading:false,
-    hasMore:true,
-    offset:0,
-    limit:20 ,
-    itemLimited:[]    
+    itemLimited:[],
+    next:"has" 
 }
 
 const fetchStart=(state,action)=>{
@@ -26,12 +24,16 @@ const fetchSuccess=(state,action)=>{
     });
 }
 
-const fetchLimitSuccess=(state,action)=>{
+const fetchLimitedDataSuccess=(state,action)=>{
+    let joinArray=[]
+    joinArray=Array.from([...state.itemLimited,...action.itemLimited]);
+    let uniqueArray = joinArray.filter( (ele, ind) => ind === joinArray.findIndex( elem => elem.jobid === ele.jobid && elem.id === ele.id)) //Removing duplicates after concatination
+
     return updateObject(state,{
-        itemLimited:[...state.itemLimited,action.itemLimited],
+        itemLimited:uniqueArray,
         error:null,
         loading:false,
-        offset:action.offset
+        next:action.next
     });
 }
 const fetchFail=(state,action)=>{
@@ -43,7 +45,7 @@ const fetchFail=(state,action)=>{
 
 const searchItems=(state,action)=>{
     return updateObject(state,{
-        items:action.items,
+        itemLimited:action.itemLimited,
         error:null,
         loading:false
     });
@@ -54,7 +56,7 @@ const searchItems=(state,action)=>{
     switch(action.type){
         case actionTypes.FETCH_START: return fetchStart(state,action);
         case actionTypes.FETCH_SUCCESS: return fetchSuccess(state,action);
-        case actionTypes.FETCH_LIMIT_SUCCESS: return fetchLimitSuccess(state,action);
+        case actionTypes.FETCH_LIMIT_SUCCESS: return fetchLimitedDataSuccess(state,action);
         case actionTypes.FETCH_FAIL: return fetchFail(state,action);
         case actionTypes.SEARCHITEMS: return searchItems(state,action);
         default:

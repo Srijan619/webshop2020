@@ -56,7 +56,7 @@ const ItemsOnSale = (props) => {
     const [saveDisabled, setSaveDisabled] = useState(true)
     const [price, setPrice] = useState(0)
     const [open,setOpen]=useState(true)
-
+    const data = Array.from(props.items) // Converts dictionary to array which solves map problem
     useEffect(() => {
         props.onGetItems();
         // eslint-disable-next-line
@@ -69,8 +69,8 @@ const ItemsOnSale = (props) => {
         setSaveDisabled(!saveDisabled)
 
     }
-    const saveEdit = (e, item) => {
-        props.onEditItem(item, price)
+    const saveEdit = async (e, item) => {
+        await props.onEditItem(item, price)
         setOpen(true)
         setDisabled(!disabled)
         setSaveDisabled(!saveDisabled)
@@ -95,7 +95,7 @@ const ItemsOnSale = (props) => {
             </Alert>
           </Snackbar>)
     }
-    const data = Array.from(props.items) // Converts dictionary to array which solves map problem
+  
     return (
         <>
             {message}

@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField'
 import { connect } from 'react-redux';
 import * as actionAdd from '../../store/actions/browse'
-import { useHistory } from "react-router-dom";
 import Snackbar from '@material-ui/core/Snackbar';
 import  MuiAlert  from '@material-ui/lab/Alert';
 
@@ -26,31 +25,35 @@ const useStyles = makeStyles({
 const AddItems = (props) => {
     const [open, setOpen] = useState(false);
     const classes = useStyles();
-    const history = useHistory();
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState(0);
     const [openError,setOpenError]=useState(true)
+    const [disableButton, setDisableButton] = useState(true)
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-     
-         props.onAddItems(title,description,price,props.posted_by);
-      
-       if(!props.error){
-        history.push('/myitems')
-       }
+        props.onAddItems(title,description,price,props.posted_by);
         setTitle("")
         setDescription("")
         setPrice("")
         setOpenError(true)
         setOpen(false)
-
-        
     } 
 
+    useEffect(() => {
+        
+        if (title&&description&&price) {
+            setDisableButton(false)
 
+        }
+        else {
+            setDisableButton(true)
+        }
+
+        // eslint-disable-next-line
+    });
     let message = null;
     if (props.error) {
         message = (
@@ -77,7 +80,7 @@ const AddItems = (props) => {
                         <TextField label="Title" variant="filled" value={title} onChange={(e) => setTitle(e.target.value)} />
                         <TextField label="Description" multiline variant="filled"  value={description} onChange={(e) => setDescription(e.target.value)}/>
                         <TextField label="Price" type="number"  variant="filled" value={price} onChange={(e) => setPrice(e.target.value)} />
-                        <Button  color="primary" variant="contained" type="submit">Add</Button>
+                        <Button  color="primary" variant="contained" type="submit"  disabled={disableButton}>Add</Button>
                       
                     </form>
                     {message}
