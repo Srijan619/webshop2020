@@ -1,7 +1,8 @@
 import axios from 'axios';
 import * as actionTypes from './actionTypes';
+import Cookies from 'universal-cookie';
 
-
+const cookies = new Cookies();
 export const changePasswordStart = () => {
     return {
         type:actionTypes.CHANGEPASSWORD_START,
@@ -29,7 +30,7 @@ export const changePasswordFail = error => {
 export const authChangePassword =  (oldPassword, newPassword1,newPassword2,history)=>{
     return (dispatch)=> {
         dispatch(changePasswordStart());
-        let token=localStorage.getItem("token")
+        const token = cookies.get('token');
         axios.post("http://127.0.0.1:8000/rest-auth/password/change/",{
             old_password:oldPassword,
             new_password1:newPassword1,

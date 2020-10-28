@@ -1,7 +1,8 @@
 import axios from 'axios';
 import * as actionTypes from './actionTypes';
+import Cookies from 'universal-cookie';
 
-
+const cookies = new Cookies();
 export const fetchStart = () => {
     return {
         type:actionTypes.FETCH_START
@@ -86,7 +87,7 @@ export const getItemsOnSale=(page)=>{
 export const addItems=(title,description,price,posted_by)=>{
     return async dispatch=>{
         dispatch(fetchStart)
-        let token=localStorage.getItem("token")
+        const token = cookies.get('token');
         await axios.post("http://127.0.0.1:8000/api/add/",{
             title:title,
             description:description,

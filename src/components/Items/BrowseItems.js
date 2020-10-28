@@ -10,6 +10,7 @@ import * as actions from '../../store/actions/browse'
 import * as actionAdd from '../../store/actions/cartAction'
 import MoreIcon from '@material-ui/icons/More';
 import { IconButton } from '@material-ui/core';
+
 const useStyles = makeStyles({
     root: {
         marginRight: '1%',
