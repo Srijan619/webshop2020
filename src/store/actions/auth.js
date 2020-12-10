@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as actionTypes from './actionTypes';
 import * as cartAction from '../actions/cartAction'
 import Cookies from 'universal-cookie';
-const url="https://webshop-1-1.herokuapp.com/"
+const url="https://webshop-1-1.herokuapp.com"
 const cookies = new Cookies();
 export const authStart = () => {
     return {

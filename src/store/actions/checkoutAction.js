@@ -3,7 +3,7 @@ import * as actionTypes from './actionTypes';
 import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
-const url="https://webshop-1-1.herokuapp.com/"
+const url="https://webshop-1-1.herokuapp.com"
 export const checkOutStart = () => {
     return {
         type:actionTypes.CHECKOUT_START

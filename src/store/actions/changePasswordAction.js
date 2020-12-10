@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as actionTypes from './actionTypes';
 import Cookies from 'universal-cookie';
-const url="https://webshop-1-1.herokuapp.com/"
+const url="https://webshop-1-1.herokuapp.com"
 const cookies = new Cookies();
 export const changePasswordStart = () => {
     return {
