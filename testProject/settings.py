@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'ear(+b*pji@1jo*)h=t8d3p&(3m+lvv*=1=hqhn&0*^-jg%4!+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = 
 
-ALLOWED_HOSTS = ['127.0.0.1','test-django-react-app1.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1','webshop-1-1.herokuapp.com']
 
 
 REST_FRAMEWORK = {
