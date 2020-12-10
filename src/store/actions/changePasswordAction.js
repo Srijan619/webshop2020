@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as actionTypes from './actionTypes';
 import Cookies from 'universal-cookie';
-
+const url="https://webshop-1-1.herokuapp.com/"
 const cookies = new Cookies();
 export const changePasswordStart = () => {
     return {
@@ -31,7 +31,7 @@ export const authChangePassword =  (oldPassword, newPassword1,newPassword2,histo
     return (dispatch)=> {
         dispatch(changePasswordStart());
         const token = cookies.get('token');
-        axios.post("http://127.0.0.1:8000/rest-auth/password/change/",{
+        axios.post(url+"/rest-auth/password/change/",{
             old_password:oldPassword,
             new_password1:newPassword1,
             new_password2:newPassword2

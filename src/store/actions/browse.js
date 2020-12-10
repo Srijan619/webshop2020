@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as actionTypes from './actionTypes';
 import Cookies from 'universal-cookie';
-
+const url="https://webshop-1-1.herokuapp.com/"
 const cookies = new Cookies();
 export const fetchStart = () => {
     return {
@@ -44,7 +44,7 @@ export const searchItems = (keyword)=>{
     return async dispatch=>{
         dispatch(fetchStart())
         try {
-            const res = await axios.get("http://127.0.0.1:8000/api/search/?search="+keyword);
+            const res = await axios.get(url+"/api/search/?search="+keyword);
             const items = res.data.results;
             dispatch(searchItem(items));
         } catch (err) {
@@ -58,7 +58,7 @@ export const getItems=()=>{
     return async dispatch=>{
         dispatch(fetchStart())
         try {
-            const res = await axios.get("http://127.0.0.1:8000/api/");
+            const res = await axios.get(url+"/api/");
             const items = res.data;
             dispatch(fetchSuccess(items));
         } catch (err) {
@@ -72,7 +72,7 @@ export const getItemsOnSale=(page)=>{
     return async dispatch=>{
         dispatch(fetchStart())
         try {
-            const res = await axios.get(`http://127.0.0.1:8000/api/onsale/?page=${page}`);
+            const res = await axios.get(url+`/api/onsale/?page=${page}`);
             const items = res.data.results;
             const next=res.data.next
             dispatch(fetchLimitedDataSuccess(items,next));
@@ -88,7 +88,7 @@ export const addItems=(title,description,price,posted_by)=>{
     return async dispatch=>{
         dispatch(fetchStart)
         const token = cookies.get('token');
-        await axios.post("http://127.0.0.1:8000/api/add/",{
+        await axios.post(url+"/api/add/",{
             title:title,
             description:description,
             price:price,

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as actionTypes from './actionTypes';
 import Cookies from 'universal-cookie';
-
+const url="https://webshop-1-1.herokuapp.com/"
 const cookies = new Cookies();
 
 export const editItemStart = () => {
@@ -30,7 +30,7 @@ export const editItem= (item,price)=>{
     return async dispatch=>{
         dispatch(editItemStart())
         const token = cookies.get('token');
-            const dataFromServer= await axios.get("http://127.0.0.1:8000/api/"+item.id+"/") //Getting original data to check the version against
+            const dataFromServer= await axios.get(url+"/api/"+item.id+"/") //Getting original data to check the version against
             .then(res=>{
                 return res.data
             })
@@ -38,7 +38,7 @@ export const editItem= (item,price)=>{
             console.log(item.version)
             if(dataFromServer.version===item.version)
             {
-            await axios.put("http://127.0.0.1:8000/api/update/"+item.id+"/",{
+            await axios.put(url+"/api/update/"+item.id+"/",{
                 price:price,
                 version:item.version+1
             },{
