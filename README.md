@@ -6,7 +6,7 @@ The webshop is a  web  application where  users  can buy and  sell  items.An Ite
 
 1. Landing Page (/) (Served by Django), Shop Page (/main) (SPA using React)
 2. Automatic DB population (Generate random Users and Items to Sell)
-3. Browse and Search Items (Except the ones listed by the user itself)
+3. Browse and Search Items (Except the ones listed by the user itself) (Lazy Loading 10 items at once, load more data on click)
 4. Create Account
 5. Login / Edit Account
 6. Add Items to sell
@@ -22,3 +22,10 @@ The webshop is a  web  application where  users  can buy and  sell  items.An Ite
 
 1. Security provided bt JWT
 2. Uses Material UI
+
+### Others
+
+1. Redux as State Management
+2. Json WebTokens for authentication
+3. Django-Rest-Framework for API
+4. Pagination provided by Django-Rest-Framework-Pagination
