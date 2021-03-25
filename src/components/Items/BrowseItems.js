@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -9,7 +9,8 @@ import { connect } from 'react-redux';
 import * as actions from '../../store/actions/browse'
 import * as actionAdd from '../../store/actions/cartAction'
 import MoreIcon from '@material-ui/icons/More';
-import { IconButton } from '@material-ui/core';
+import { CardMedia, IconButton } from '@material-ui/core';
+
 
 const useStyles = makeStyles({
     root: {
@@ -17,17 +18,17 @@ const useStyles = makeStyles({
         marginBottom: '2%',
         maxWidth: 400,
         minWidth: 400,
-        maxHeight:200,
-        height:'fit-content',
+        maxHeight: 'fit-content',
+        height: 'fit-content',
         width: 'fit-content',
-      
+
     },
     container: {
-        marginTop: window.innerHeight/10,
-        marginLeft:'1%',
+        marginTop: window.innerHeight / 10,
+        marginLeft: '1%',
         display: 'flex',
         flexFlow: 'row wrap',
-      
+
     },
     price: {
         fontSize: 14,
@@ -44,48 +45,63 @@ const useStyles = makeStyles({
         fontSize: 12,
         color: 'grey',
 
+    },
+    image: {
+        height: 0,
+        paddingTop: '100%', // 16:9
+
     }
 });
 const BrowseItems = (props) => {
-    const[page,setPage]=useState(1)
-    useEffect( () => {
-     document.title="Browse the Shop"
-     props.onGetItemsOnSale(page); //Filters On Sale Items
-    // eslint-disable-next-line
+    const [page, setPage] = useState(1)
+    const [image, setImage] = useState("https://loremflickr.com/320/240?random=1")
+    const [isDisabledButtons, setDisabledButtons] = useState([])
 
-    },[]);
-    
- 
-    const handleLoadMore=()=>{
-     
-     let getPage=page+1
-     setPage(getPage)
-     if(!props.nextItem) return;
-     props.onGetItemsOnSale(getPage)
-  
+    useEffect(() => {
+        document.title = "Browse the Shop"
+        props.onGetItemsOnSale(page); //Filters On Sale Items
+        // eslint-disable-next-line
+
+    }, []);
+
+
+    const handleLoadMore = () => {
+
+        let getPage = page + 1
+        setPage(getPage)
+        if (!props.nextItem) return;
+        props.onGetItemsOnSale(getPage)
+
     }
     const classes = useStyles();
 
 
-    const addToBasket = (item,e) => {
-        
-       let duplicate=false;
-       const dataCart=Array.from(props.itemsCart);
-      
-       
-       if(dataCart.length!==0){
-         dataCart.map(data=>{
-           if(data.id===item.id){
-            duplicate=true;
-           }
-       })}
-      if(!duplicate){
-        props.onAddToBasket(item)
-      }
+    const addToBasket = (item) => {
+
+        let duplicate = false;
+        const dataCart = Array.from(props.itemsCart);
+
+
+        if (dataCart.length !== 0) {
+            dataCart.map(data => {
+                if (data.id === item.id) {
+                    duplicate = true;
+
+                }
+            })
+        }
+        if (!duplicate) {
+            props.onAddToBasket(item)
+            let newarray = isDisabledButtons
+            newarray.push(item.id)
+            setDisabledButtons(newarray)
+
+        }
+
     }
-  
-    const data= Array.from(props.itemsLimited)
- 
+
+    const data = Array.from(props.itemsLimited)
+
     let errorMessage = null;
     if (props.error) {
         errorMessage = (
@@ -95,49 +111,59 @@ const BrowseItems = (props) => {
     return (
         <>
             {errorMessage}
-      
+
             {props.loading ? <div>Loading......</div>
                 :
-<>
-                <div className={classes.container}>
-                    {data.map(item =>
-                        {
-                          
-                            if (item.posted_by!==props.username)
+                <>
+                    <div className={classes.container}>
+                        {data.map((item) => {
+                            { console.log(isDisabledButtons.length) }
+
+
+                            if (item.posted_by !== props.username)
+
                                 return (
-                                    
-                            <Card className={classes.root} key={item.id}>
-                                <CardContent>
-                                    <Typography className={classes.pos} color="textSecondary" component="span">
-                                        {item.title}
-                                        <Divider></Divider>
-                                    </Typography>
 
-                                    <Typography className={classes.pos} variant="body2" component="span">
-                                        {item.description}
-                                        <Divider></Divider>
-                                    </Typography>
-                                    <Typography variant="body2" component="span" className={classes.price}>
-                                        {item.price}€
-                                        <Divider></Divider>
-                                    </Typography>
-                                    <Typography variant="body2" className={classes.date}>
-                                        {item.created_date.substring(0, 10)} / {item.posted_by}
-                                    </Typography>
-                                    {props.isAuthenticated && item.posted_by!==props.username ? <Button className={classes.button} color="primary" variant="contained" onClick={(e) => addToBasket(item, e)} >Add to cart</Button> : <></>}
+                                    <Card className={classes.root} key={item.id}>
 
-                                </CardContent>
-                            </Card>
+                                        <CardContent>
+                                            <CardMedia image={image} id="image" className={classes.image}></CardMedia>
+                                            <Typography className={classes.pos} color="textSecondary" component="span">
+                                                {item.title}
+                                                <Divider></Divider>
+                                            </Typography>
+
+                                            <Typography className={classes.pos} variant="body2" component="span">
+                                                {item.description}
+                                                <Divider></Divider>
+                                            </Typography>
+                                            <Typography variant="body2" component="span" className={classes.price}>
+                                                {item.price}€
+                                                      <Divider></Divider>
+                                            </Typography>
+                                            <Typography variant="body2" className={classes.date}>
+                                                {item.created_date.substring(0, 10)} / {item.posted_by}
+                                            </Typography>
+                                            {props.isAuthenticated && item.posted_by !== props.username ? <Button disabled={isDisabledButtons.indexOf(item.id) > -1} className={classes.button} color="primary" variant="contained" onClick={() => addToBasket(item)} >Add to cart</Button> : <></>}
+
+                                        </CardContent>
+                                    </Card>
                                 )
-                         }
-                        )}
 
-                </div>
-                {!props.nextItem?<Typography>No more items to load.....</Typography>:<IconButton onClick={handleLoadMore}> <MoreIcon></MoreIcon> Load More</IconButton>}
+
+                        })
+                        }
+
+
+
+                        )
+
+                    </div>
+                    {!props.nextItem ? <Typography>No more items to load.....</Typography> : <IconButton onClick={handleLoadMore}> <MoreIcon></MoreIcon> Load More</IconButton>}
                 </>
             }
-          
-     
+
+
         </>
 
     );
@@ -148,17 +174,17 @@ const mapStateToProps = (state) => {
         isAuthenticated: state.authReducer.token !== null,
         loading: state.browseReducer.loading,
         error: state.browseReducer.error,
-        itemsCart:state.cartReducer.items,
-        username:state.authReducer.username,
-        itemsLimited:state.browseReducer.itemLimited,
-        nextItem:state.browseReducer.next
+        itemsCart: state.cartReducer.items,
+        username: state.authReducer.username,
+        itemsLimited: state.browseReducer.itemLimited,
+        nextItem: state.browseReducer.next
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
         onGetItemsOnSale: (page) => dispatch(actions.getItemsOnSale(page)),
         onAddToBasket: (item) => dispatch(actionAdd.addToBasket(item)),
-    
+
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(BrowseItems);

@@ -24,6 +24,7 @@ function App(props) {
         <Nav />
         <Switch>
         <Route path="/main/" exact  component={BrowseItems}/>
+        <Route path="/" exact  component={BrowseItems}/>
          {props.token? <><Route path="/main/cart" component={Cart}/>
           <Route path="/main/myitems" component={MyItems}/>
           <Route path="/main/change_password" component={ChangePassword}/>
