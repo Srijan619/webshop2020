@@ -156,7 +156,7 @@ const BrowseItems = (props) => {
 
 
 
-                        )
+                        
 
                     </div>
                     {!props.nextItem ? <Typography>No more items to load.....</Typography> : <IconButton onClick={handleLoadMore}> <MoreIcon></MoreIcon> Load More</IconButton>}

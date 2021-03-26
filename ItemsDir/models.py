@@ -11,6 +11,7 @@ class Items(models.Model):
     posted_by=models.CharField(max_length=45, default="")
     sold_to=models.CharField(max_length=45, default="",blank=True)
     version=models.IntegerField(default=0)
+    image=models.ImageField(upload_to="image")
 
     def __str__(self):
         return self.title
