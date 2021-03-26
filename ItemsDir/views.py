@@ -117,7 +117,7 @@ class generateData(APIView):
                 description=fake.sentence(nb_words=10)
                 price=random.randrange(1,1000)
                 posted_by=user.username
-                image = ("https://loremflickr.com/320/240?random="+str(random.randrange(1,100)))
+                image = ('https://loremflickr.com/320/240/'+fake.first_name()+'/all')
                 queryset=Items.objects.create(title=title,description=description,price=price,posted_by=posted_by,image=image)
                 serializer= ItemSerializer(data=queryset)
                 if serializer.is_valid():

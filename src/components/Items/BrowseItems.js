@@ -60,6 +60,7 @@ const BrowseItems = (props) => {
     useEffect(() => {
         document.title = "Browse the Shop"
         props.onGetItemsOnSale(page); //Filters On Sale Items
+     
         // eslint-disable-next-line
 
     }, []);
@@ -117,7 +118,7 @@ const BrowseItems = (props) => {
                 <>
                     <div className={classes.container}>
                         {data.map((item) => {
-                            { console.log(isDisabledButtons.length) }
+                            { console.log(item) }
 
 
                             if (item.posted_by !== props.username)
@@ -127,7 +128,7 @@ const BrowseItems = (props) => {
                                     <Card className={classes.root} key={item.id}>
 
                                         <CardContent>
-                                            <CardMedia image={image} id="image" className={classes.image}></CardMedia>
+                                            <CardMedia image={item.image} id="image" className={classes.image}></CardMedia>
                                             <Typography className={classes.pos} color="textSecondary" component="span">
                                                 {item.title}
                                                 <Divider></Divider>

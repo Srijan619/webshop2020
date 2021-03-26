@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as actionTypes from './actionTypes';
 import * as cartAction from '../actions/cartAction'
 import Cookies from 'universal-cookie';
-
+const url="https://webshop-1-1.herokuapp.com"
 const cookies = new Cookies();
 export const authStart = () => {
     return {
@@ -75,7 +75,7 @@ export const authLogin = (username, password, history) => {
     //let history = useHistory();
     return async (dispatch) => {
         dispatch(authStart());
-        await axios.post("http://127.0.0.1:8000/api-token-auth/", {
+        await axios.post(url+"/api-token-auth/", {
             username: username,
             password: password
         })
@@ -99,7 +99,7 @@ export const authLogin = (username, password, history) => {
 export const authSignup = (username, email, password1, password2, history) => {
     return async dispatch => {
         dispatch(authStart());
-        await axios.post("http://127.0.0.1:8000/rest-auth/registration/", {
+        await axios.post(url+"/rest-auth/registration/", {
             username: username,
             email: email,
             password1: password1,
